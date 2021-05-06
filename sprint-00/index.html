@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sprint 00</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" type="module" defer></script>
+</head>
+<body>
+    <div class="tasks">
+        <div class="container samples">
+            <div class="action-input" class="fit">
+                <div class="section">
+                    <label for="amount">Amount of Samples:</label>
+                    <input type="number" id="amount" value="2" min="2" max="26">
+                </div>
+                <div class="section data fit">
+                    <div class="section fit">
+                        <label for="sample-a">Sample A:</label>
+                        <input type="text" id="sample-a" class="fit" placeholder="32 12 12 14 13 13 20 18 25 18 20 14 20 14 13 14 14 18 16 18 20 22 16 18 13 18 18 18 20 20 20 22 18 32 13 16 32 20 20 16 24 18 32 20 13 22 18 18 22 25 14 20 16 2 0 20">
+                    </div>
+                    <div class="section fit">
+                        <label for="sample-b">Sample B:</label>
+                        <input type="text" id="sample-b" class="fit" placeholder="11,78 11,85 14,65 12,11 12,63 13,52 12,38 13,69 15,14 12,3 11,38 13,97 13,71 10,31 11,53 13,17 9,86 14,23 12,46 10,22 11,71 13,43 10,06 13,4 13,11 15,09 10,32 9,57 9,63 9,71">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container task-1">
+            <div class="action-header">
+                <div class="section">
+                    <span class="title without">Task 1</span>
+                </div>
+            </div>
+            <div class="action-calculation">
+                <div class="section">
+                    <input type="button" value="Calculate" class="calculate">
+                </div>
+            </div>
+            <div class="action-answer">
+                <div class="section">
+                    <span class="title">Variation Series:</span>
+                    <input type="text" class="series fit" readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Range:</span>
+                    <input type="text" class="range short" readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Table:</span>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="text" value="Sample" readonly class="centered"></th>
+                                <th><input type="text" value="Frequence" readonly class="centered"></th>
+                                <th><input type="text" value="Accumulated frequence" readonly class="centered"></th>
+                                <th><input type="text" value="Relative frequence" readonly class="centered"></th>
+                                <th><input type="text" value="Cumulative relative frequence" readonly class="centered"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="answer">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
