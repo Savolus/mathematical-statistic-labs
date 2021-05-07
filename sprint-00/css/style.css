@@ -136,3 +136,8 @@ label {
 input[type=text].fit {
     width: calc(100% - 80px);
 }
+
+canvas {
+    max-width: 75vh;
+    max-height: 75vh;
+}

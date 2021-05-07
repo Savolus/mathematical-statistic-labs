@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Sprint 00</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/script.js" type="module" defer></script>
 </head>
 <body>
@@ -61,6 +62,101 @@
                         <tbody class="answer">
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+        <div class="container task-2">
+            <div class="action-header">
+                <div class="section">
+                    <span class="title without">Task 2</span>
+                </div>
+            </div>
+            <div class="action-calculation">
+                <div class="section">
+                    <input type="button" value="Calculate" class="calculate">
+                </div>
+            </div>
+            <div class="action-answer">
+                <div class="section">
+                    <span class="title">Polygon chart:</span>
+                    <canvas id="chart-1"></canvas>
+                </div>
+                <div class="section">
+                    <span class="title">Histogram chart:</span>
+                    <canvas id="chart-2"></canvas>
+                </div>
+                <div class="section">
+                    <span class="title">Empirical distribution function:</span>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>F*(x) =&nbsp;</td>
+                                <td class="answer"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section">
+                    <span class="title">Empirical distribution function chart:</span>
+                    <canvas id="chart-3"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="container task-3">
+            <div class="action-header">
+                <div class="section">
+                    <span class="title without">Task 3</span>
+                </div>
+            </div>
+            <div class="action-calculation">
+                <div class="section">
+                    <input type="button" value="Calculate" class="calculate">
+                </div>
+            </div>
+            <div class="action-answer">
+                <div class="section">
+                    <span class="title">Sample mean:</span>
+                    <input type="text" data-mean>
+                </div>
+                <div class="section">
+                    <span class="title">Median:</span>
+                    <input type="text" data-median>
+                </div>
+                <div class="section">
+                    <span class="title">Mode:</span>
+                    <input type="text" data-mode>
+                </div>
+                <div class="section">
+                    <span class="title">Sample variance:</span>
+                    <input type="text" data-variance>
+                </div>
+                <div class="section">
+                    <span class="title">Sample standard deviation:</span>
+                    <input type="text" data-standard="sample">
+                </div>
+                <div class="section">
+                    <span class="title">The coefficient of variation:</span>
+                    <input type="text" data-coefficient>
+                </div>
+                <div class="section">
+                    <span class="title">Central moment 3, 4:</span>
+                    <input type="text" data-moment>
+                </div>
+                <div class="section">
+                    <span class="title">Asymmetry:</span>
+                    <input type="text" data-asymmetry>
+                </div>
+                <div class="section">
+                    <span class="title">Excess:</span>
+                    <input type="text" data-excess>
+                </div>
+                <div class="section">
+                    <span class="title">Variance fixed:</span>
+                    <input type="text" data-fixed>
+                </div>
+                <div class="section">
+                    <span class="title">Corrected standard deviation:</span>
+                    <input type="text" data-standard="correct">
                 </div>
             </div>
         </div>
