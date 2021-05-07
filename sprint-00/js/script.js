@@ -2,6 +2,8 @@ import calc from "./calc.js";
 import mean from "./mean.js";
 import median from "./median.js";
 import mode from "./mode.js";
+import moment from "./moment.js";
+import variance from "./variance.js";
 
 const samplesElement = document.querySelector('.data')
 const changerElement = document.querySelector('#amount')
@@ -220,7 +222,8 @@ calculateTask3Element.addEventListener('click', () => {
     const varianceElement = task3Element.querySelector('[data-variance]')
     const standardSampleElement = task3Element.querySelector('[data-standard=sample]')
     const coefficientElement = task3Element.querySelector('[data-coefficient]')
-    const momentElement = task3Element.querySelector('[data-moment]')
+    const moment3Element = task3Element.querySelector('[data-moment-3]')
+    const moment4Element = task3Element.querySelector('[data-moment-4]')
     const asymmetryElement = task3Element.querySelector('[data-asymmetry]')
     const excessElement = task3Element.querySelector('[data-excess]')
     const fixedElement = task3Element.querySelector('[data-fixed]')
@@ -239,11 +242,49 @@ calculateTask3Element.addEventListener('click', () => {
 
     const [, frequence] = calc(sample)
 
-    console.log(frequence)
+    const meanOutput = mean(sample).toFixed(5)
 
-    meanElement.value = mean(sample).toFixed(5)
-    medianElement.value = median(sample)
-    modeElement.value = mode(sample)
+    meanElement.value = meanOutput
+    medianElement.value = median(sample).toFixed(5)
+
+    const modes = Object.keys(mode(frequence)).map(value => +value)
+    let modeOutput = ''
+
+    for (const key of modes) {
+        modeOutput += `${key}, `
+    }
+
+    modeOutput = modeOutput.slice(0, modeOutput.length - 2)
+
+    modeElement.value = modeOutput
+
+    const varianceSampleOutput = variance(sample, meanOutput)
+    const deviationOutput = Math.sqrt(varianceSampleOutput)
+
+    varianceElement.value = varianceSampleOutput.toFixed(5)
+    standardSampleElement.value = deviationOutput.toFixed(5)
+    coefficientElement.value = (deviationOutput / meanOutput).toFixed(5)
+
+    const moment3 = moment(sample, meanOutput, 3)
+    const moment4 = moment(sample, meanOutput, 4)
+
+    moment3Element.value = moment3.toFixed(5)
+    moment4Element.value = moment4.toFixed(5)
+
+    const asymmetryOutput = ((meanOutput - modes.reduce((acc, value) => acc += value, 0) / modes.length) / deviationOutput)
+
+    asymmetryElement.value = `${asymmetryOutput.toFixed(5)}  =>  ${Math.abs(asymmetryOutput) < 0.5 ? 'Symmetric' : 'Asymmetric'}`
+
+    const excessOutput = moment4 / (deviationOutput ** 4)
+
+    excessElement.value = excessOutput.toFixed(5)
+
+    // const varianceFixedOutput = varianceFixed(sample, meanOutput)
+    const varianceFixedOutput = varianceSampleOutput * (sample.length - 1) / sample.length
+    const correctedDeviationOutput = Math.sqrt(varianceFixedOutput)
+
+    fixedElement.value = varianceFixedOutput.toFixed(5)
+    standardCorrectElement.value = correctedDeviationOutput.toFixed(5)
 
     task3Element.querySelector('.action-answer').style.display = 'block'
 })
