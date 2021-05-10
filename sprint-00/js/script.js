@@ -11,10 +11,12 @@ const changerElement = document.querySelector('#amount')
 const task1Element = document.querySelector('.task-1')
 const task2Element = document.querySelector('.task-2')
 const task3Element = document.querySelector('.task-3')
+const task4Element = document.querySelector('.task-4')
 
 const calculateTask1Element = task1Element.querySelector('.calculate')
 const calculateTask2Element = task2Element.querySelector('.calculate')
 const calculateTask3Element = task3Element.querySelector('.calculate')
+const calculateTask4Element = task4Element.querySelector('.calculate')
 
 const chart1Element = task2Element.querySelector('#chart-1')
 const chart2Element = task2Element.querySelector('#chart-2')
@@ -71,6 +73,10 @@ changerElement.addEventListener('change', () => {
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
     samplesElement.innerHTML = ''
+
+    if (changerElement.value < 0 || changerElement.value > 26) {
+        return
+    }
 
     for (let i = 0; i < changerElement.value; i++) {
         const div = document.createElement('div')
@@ -279,7 +285,6 @@ calculateTask3Element.addEventListener('click', () => {
 
     excessElement.value = excessOutput.toFixed(5)
 
-    // const varianceFixedOutput = varianceFixed(sample, meanOutput)
     const varianceFixedOutput = varianceSampleOutput * (sample.length - 1) / sample.length
     const correctedDeviationOutput = Math.sqrt(varianceFixedOutput)
 
@@ -287,4 +292,42 @@ calculateTask3Element.addEventListener('click', () => {
     standardCorrectElement.value = correctedDeviationOutput.toFixed(5)
 
     task3Element.querySelector('.action-answer').style.display = 'block'
+})
+
+calculateTask4Element.addEventListener('click', () => {
+    const expectedValueMomentElement = task4Element.querySelector('[data-expected-moment]')
+    const varianceMomentElement = task4Element.querySelector('[data-variance-moment]')
+    const deviationMomentElement = task4Element.querySelector('[data-deviation-moment]')
+    const expectedValueLikelihoodElement = task4Element.querySelector('[data-expected-likelihood]')
+    const varianceLikelihoodElement = task4Element.querySelector('[data-variance-likelihood]')
+    const deviationLikelihoodElement = task4Element.querySelector('[data-deviation-likelihood]')
+
+    const samplesElements = [...samplesElement.querySelectorAll('.section')]
+    let sample = []
+
+    for (let i = 0; i < changerElement.value; i++) {
+        const input = samplesElements[i].querySelector('input')
+
+        sample.push(...parseSample(input.value ? input.value : input.placeholder))
+    }
+
+    sample.sort((a, b) => a - b)
+
+    const expectedValueMoment = mean(sample)
+    const varianceMoment = moment(sample, mean(sample), 2)
+    const deviationMoment = Math.sqrt(varianceMoment)
+
+    expectedValueMomentElement.value = expectedValueMoment.toFixed(5)
+    varianceMomentElement.value = varianceMoment.toFixed(5)
+    deviationMomentElement.value = deviationMoment.toFixed(5)
+
+    const expectedValueLikelihood = mean(sample)
+    const varianceLikelihood = moment(sample, mean(sample), 2)
+    const deviationLikelihood = Math.sqrt(varianceLikelihood)
+
+    expectedValueLikelihoodElement.value = expectedValueLikelihood.toFixed(10)
+    varianceLikelihoodElement.value = varianceLikelihood.toFixed(10)
+    deviationLikelihoodElement.value = deviationLikelihood.toFixed(10)
+
+    task4Element.querySelector('.action-answer').style.display = 'block'
 })

@@ -13,7 +13,7 @@
             <div class="action-input" class="fit">
                 <div class="section">
                     <label for="amount">Amount of Samples:</label>
-                    <input type="number" id="amount" value="2" min="2" max="26">
+                    <input type="number" id="amount" value="2" min="1" max="26">
                 </div>
                 <div class="section data fit">
                     <div class="section fit">
@@ -116,48 +116,86 @@
             <div class="action-answer">
                 <div class="section">
                     <span class="title">Sample mean:</span>
-                    <input type="text" data-mean>
+                    <input type="text" data-mean readonly>
                 </div>
                 <div class="section">
                     <span class="title">Median:</span>
-                    <input type="text" data-median>
+                    <input type="text" data-median readonly>
                 </div>
                 <div class="section">
                     <span class="title">Mode:</span>
-                    <input type="text" data-mode>
+                    <input type="text" data-mode readonly>
                 </div>
                 <div class="section">
                     <span class="title">Sample variance:</span>
-                    <input type="text" data-variance>
+                    <input type="text" data-variance readonly>
                 </div>
                 <div class="section">
                     <span class="title">Sample standard deviation:</span>
-                    <input type="text" data-standard="sample">
+                    <input type="text" data-standard="sample" readonly>
                 </div>
                 <div class="section">
                     <span class="title">Coefficient of variation:</span>
-                    <input type="text" data-coefficient>
+                    <input type="text" data-coefficient readonly>
                 </div>
                 <div class="section">
                     <span class="title">Central moment 3, 4:</span>
-                    <input type="text" data-moment-3><br>
-                    <input type="text" data-moment-4>
+                    <input type="text" data-moment-3 readonly><br>
+                    <input type="text" data-moment-4 readonly>
                 </div>
                 <div class="section">
                     <span class="title">Asymmetry:</span>
-                    <input type="text" data-asymmetry>
+                    <input type="text" data-asymmetry readonly>
                 </div>
                 <div class="section">
                     <span class="title">Excess:</span>
-                    <input type="text" data-excess>
+                    <input type="text" data-excess readonly>
                 </div>
                 <div class="section">
                     <span class="title">Variance fixed:</span>
-                    <input type="text" data-fixed>
+                    <input type="text" data-fixed readonly>
                 </div>
                 <div class="section">
                     <span class="title">Corrected standard deviation:</span>
-                    <input type="text" data-standard="correct">
+                    <input type="text" data-standard="correct" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="container task-4">
+            <div class="action-header">
+                <div class="section">
+                    <span class="title without">Task 4</span>
+                </div>
+            </div>
+            <div class="action-calculation">
+                <div class="section">
+                    <input type="button" value="Calculate" class="calculate">
+                </div>
+            </div>
+            <div class="action-answer">
+                <div class="section">
+                    <span class="title">Expected value (moment's method):</span>
+                    <input type="text" data-expected-moment readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Variance (moment's method):</span>
+                    <input type="text" data-variance-moment readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Deviation (moment's method):</span>
+                    <input type="text" data-deviation-moment readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Expected value (likelihood's method):</span>
+                    <input type="text" data-expected-likelihood readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Variance (likelihood's method):</span>
+                    <input type="text" data-variance-likelihood readonly>
+                </div>
+                <div class="section">
+                    <span class="title">Deviation (likelihood's method):</span>
+                    <input type="text" data-deviation-likelihood readonly>
                 </div>
             </div>
         </div>
