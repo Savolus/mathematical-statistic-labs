@@ -12,11 +12,13 @@ const task1Element = document.querySelector('.task-1')
 const task2Element = document.querySelector('.task-2')
 const task3Element = document.querySelector('.task-3')
 const task4Element = document.querySelector('.task-4')
+const task5Element = document.querySelector('.task-5')
 
 const calculateTask1Element = task1Element.querySelector('.calculate')
 const calculateTask2Element = task2Element.querySelector('.calculate')
 const calculateTask3Element = task3Element.querySelector('.calculate')
 const calculateTask4Element = task4Element.querySelector('.calculate')
+const calculateTask5Element = task5Element.querySelector('.calculate')
 
 const chart1Element = task2Element.querySelector('#chart-1')
 const chart2Element = task2Element.querySelector('#chart-2')
@@ -330,4 +332,13 @@ calculateTask4Element.addEventListener('click', () => {
     deviationLikelihoodElement.value = deviationLikelihood.toFixed(10)
 
     task4Element.querySelector('.action-answer').style.display = 'block'
+})
+
+calculateTask5Element.addEventListener('click', () => {
+    const expectedValueElement = task4Element.querySelector('[data-expected]')
+    const deviationElement = task4Element.querySelector('[data-deviation]')
+    
+    
+
+    task5Element.querySelector('.action-answer').style.display = 'block'
 })
