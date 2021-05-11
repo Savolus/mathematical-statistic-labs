@@ -71,6 +71,52 @@ const renderTaks1 = table => {
     answerActionElement.style.display = 'block'
 }
 
+const z_score = p => {
+    if (p > 1) {
+        p *= 0.01
+    }
+    if (p < 0.5) {
+        return -1 * z_score(1 - p)
+    }
+    if (p > 0.92) {
+        if (p === 1) {
+            return Infinity
+        }
+
+        const temp = Math.sqrt(-1 * Math.log(1 - p))
+        
+        return (((2.3212128 * temp + 4.8501413) * temp - 2.2979648) * temp - 2.7871893) / ((1.6370678 * temp + 3.5438892) * temp + 1)
+    }
+
+    p -= 0.5
+
+    const temp = Math.pow(p, 2)
+
+    return p * (((-25.4410605 * temp + 41.3911977) * temp - 18.6150006) * temp + 2.5066282) / ((((3.1308291 * temp - 21.0622410) * temp + 23.0833674) * temp - 8.4735109) * temp + 1)
+}
+
+const expectedValueFind = (sample, p) => {
+    const x = mean(sample)
+    const z = z_score(p)
+    const s = Math.sqrt(variance(sample, x))
+
+    const upper = x - z * s / Math.sqrt(sample.length)
+    const lower = x + z * s / Math.sqrt(sample.length)
+
+    return [x, upper, lower]
+}
+
+const deviationFind = (sample, p) => {
+    const x = mean(sample)
+    const z = z_score(p)
+    const s = Math.sqrt(variance(sample, x))
+
+    const upper = s - z * s / Math.sqrt(sample.length)
+    const lower = s + z * s / Math.sqrt(sample.length)
+
+    return [s, upper, lower]
+}
+
 changerElement.addEventListener('change', () => {
     const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
@@ -335,10 +381,34 @@ calculateTask4Element.addEventListener('click', () => {
 })
 
 calculateTask5Element.addEventListener('click', () => {
-    const expectedValueElement = task4Element.querySelector('[data-expected]')
-    const deviationElement = task4Element.querySelector('[data-deviation]')
+    const expectedValueElement = task5Element.querySelector('[data-expected]')
+    const expectedValueLowerElement = task5Element.querySelector('[data-expected-lower]')
+    const expectedValueUpperElement = task5Element.querySelector('[data-expected-upper]')
+    const deviationElement = task5Element.querySelector('[data-deviation]')
+    const deviationLowerElement = task5Element.querySelector('[data-deviation-lower]')
+    const deviationUpperElement = task5Element.querySelector('[data-deviation-upper]')
     
-    
+    const samplesElements = [...samplesElement.querySelectorAll('.section')]
+    let sample = []
+
+    for (let i = 0; i < changerElement.value; i++) {
+        const input = samplesElements[i].querySelector('input')
+
+        sample.push(...parseSample(input.value ? input.value : input.placeholder))
+    }
+
+    sample.sort((a, b) => a - b)
+
+    const [expectedValue, expectedValueLower, expectedValueUpper] = expectedValueFind(sample, 0.95)
+    const [deviation, deviationLower, deviationUpper] = deviationFind(sample, 0.95)
+
+    expectedValueElement.value = expectedValue.toFixed(5)
+    expectedValueLowerElement.value = expectedValueLower.toFixed(5)
+    expectedValueUpperElement.value = expectedValueUpper.toFixed(5)
+
+    deviationElement.value = deviation.toFixed(5)
+    deviationLowerElement.value = deviationLower.toFixed(5)
+    deviationUpperElement.value = deviationUpper.toFixed(5)
 
     task5Element.querySelector('.action-answer').style.display = 'block'
 })
