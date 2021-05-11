@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sprint 01</title>
+    <title>Sprint 02</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/script.js" type="module" defer></script>
@@ -10,7 +10,7 @@
 <body>
     <div class="tasks">
         <h1>Sprint 02</h1>
-        <div class="container samples">
+        <div class="container task-data">
             <div class="action-input">
                 <div class="section">
                     <label for="amount">Amount of Intervals:</label>
@@ -93,7 +93,20 @@
                 </div>
             </div>
             <div class="action-answer">
-
+                <div class="section">
+                    <sapn class="title">Level of significance:</sapn>
+                    <input type="text" readonly data-significance>
+                </div>
+                <div class="section">
+                    <table>
+                        <thead data-thead></thead>
+                        <tbody data-tbody></tbody>
+                    </table>
+                </div>
+                <div class="section">
+                    <sapn class="title">Some chart</sapn>
+                    <canvas id="chart-1"></canvas>
+                </div>
             </div>
         </div>
         <div class="container task-2">

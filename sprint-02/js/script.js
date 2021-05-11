@@ -1,10 +1,3 @@
-import calc from "./calc.js";
-import mean from "./mean.js";
-import median from "./median.js";
-import mode from "./mode.js";
-import moment from "./moment.js";
-import variance from "./variance.js";
-
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
 
@@ -15,6 +8,30 @@ const task3Element = document.querySelector('.task-3')
 const calculateTask1Element = task1Element.querySelector('.calculate')
 const calculateTask2Element = task2Element.querySelector('.calculate')
 const calculateTask3Element = task3Element.querySelector('.calculate')
+
+const chart1Element = task1Element.querySelector('#chart-1')
+const chart1ElementContext = chart1Element.getContext('2d')
+
+let chart1 = null
+
+const parseTable = tableElement => {
+    const trs = [...tableElement.querySelectorAll('tr')]
+    const table = []
+
+    trs.forEach(tr => {
+        const start = tr.querySelector('[data-start]')
+        const end = tr.querySelector('[data-end]')
+        const value = tr.querySelector('[data-value]')
+
+        table.push({
+            start: +(start.value || start.placeholder),
+            end: +(end.value || end.placeholder),
+            value: +(value.value || value.placeholder)
+        })
+    })
+
+    return table
+}
 
 changeAmountElement.addEventListener('change', () => {
     dataElement.innerHTML = ''
@@ -51,35 +68,37 @@ changeAmountElement.addEventListener('change', () => {
     }
 })
 
-const parseTable = tableElement => {
-    const trs = [...tableElement.querySelectorAll('tr')]
-    const table = []
-
-    trs.forEach(tr => {
-        const start = tr.querySelector('[data-start]')
-        const end = tr.querySelector('[data-end]')
-        const value = tr.querySelector('[data-value]')
-
-        table.push({
-            start: +(start.value || start.placeholder),
-            end: +(end.value || end.placeholder),
-            value: +(value.value || value.placeholder)
-        })
-    })
-
-    return table
-}
-
 calculateTask1Element.addEventListener('click', () => {
-    const table = parseTable(dataElement)
+    chart1 && chart1.destroy()
+    
+    const theadElement = task1Element.querySelector('[data-thead]')
+    const tbodyElement = task1Element.querySelector('[data-tbody]')
 
-    console.table(table)
+    const table = parseTable(dataElement)
+    const alpha = 0.05
+
+
+
+    // chart1 = new Chart(chart1ElementContext, {
+    //     type: 'bar',
+    //     data: {
+    //         labels: resultedSample,
+    //         datasets: [{
+    //             label: 'Variation Series',
+    //             backgroundColor: 'rgb(255, 99, 132)',
+    //             borderColor: 'rgb(255, 99, 132)',
+    //             data: frequenceArr
+    //         }]
+    //     }
+    // })
 })
 
 calculateTask2Element.addEventListener('click', () => {
+    const table = parseTable(dataElement)
 
 })
 
 calculateTask3Element.addEventListener('click', () => {   
+    const table = parseTable(dataElement)
 
 })
