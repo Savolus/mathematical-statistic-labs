@@ -1,4 +1,4 @@
-import h0 from "./h0.js"
+import H0 from "./H0.js"
 
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
@@ -86,7 +86,8 @@ calculateTask1Element.addEventListener('click', () => {
 
     significanceElement.value = alpha
 
-    const intervals = table.map(({ start, end }) => `[${start}, ${end})`)
+    const intervalStrings = table.map(({ start, end }) => `[${start}, ${end})`)
+    const intervals = table.map(({ start, end }) => { return { start, end }})
     const values = table.map(({ value }) => value)
 
     const step = +(table[0].end - table[0].start).toFixed(5)
@@ -95,7 +96,7 @@ calculateTask1Element.addEventListener('click', () => {
 
     const intervalTR = document.createElement('tr')
 
-    intervals.forEach(interval => {
+    intervalStrings.forEach(interval => {
         const th = document.createElement('th')
         const input = document.createElement('input')
 
@@ -150,7 +151,7 @@ calculateTask1Element.addEventListener('click', () => {
     chart1 = new Chart(chart1ElementContext, {
         type: 'bar',
         data: {
-            labels: intervals,
+            labels: intervalStrings,
             datasets: [{
                 label: 'Interval statistical series',
                 backgroundColor: 'rgb(255, 99, 132, .75)',
@@ -160,7 +161,7 @@ calculateTask1Element.addEventListener('click', () => {
         }
     })
 
-    console.log(h0(values, step, alpha))
+    console.log(H0(values, intervals, step))
 
     task1Element.querySelector('.action-answer').style.display = 'block'
 })

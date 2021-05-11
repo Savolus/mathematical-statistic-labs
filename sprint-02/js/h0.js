@@ -1,28 +1,30 @@
 import mean from './mean.js'
 import variance from './variance.js'
 
-const t = (x, meanValue, deviationValue) => Math.abs(x - meanValue) / deviationValue
-const f = t => Math.exp((t ** 2) / -2) / Math.sqrt(2 * Math.PI)
-const n = (value, mult, meanValue, deviationValue) => mult * f(t(value, meanValue, deviationValue))
+const u = (x, meanValue, deviationValue) => (x - meanValue) / deviationValue
+const f = u => Math.exp((u ** 2) / 2) / Math.sqrt(2 * Math.PI)
+const n = (x, mult, meanValue, deviationValue) => mult * f(u(x, meanValue, deviationValue))
 
-export default (values, step, alpha) => {
-    const meanValue = mean(values)
-    const varianceValue = variance(values, meanValue)
+export default (values, intervals) => {
+    const xs = intervals.map(({ start, end }) => +((end + start) / 2).toFixed(5))
+    const meanValue = mean(xs)
+    const varianceValue = variance(xs, meanValue)
     const deviationValue = Math.sqrt(varianceValue)
 
     let observedValueSquared = 0
 
-    for (let i = 0; i < values.length; i++) {
-        const ni = n(values[i], (values.length * step) / deviationValue, meanValue, deviationValue)
+    for (let i = 0; i < xs.length; i++) {
+        const step = +(intervals[i].end - intervals[i].start).toFixed(5)
+        const ni = n(xs[i], (values.length * step) / deviationValue, meanValue, deviationValue)
         
-        observedValueSquared += ((values[i] - ni) ** 2) / ni
+        observedValueSquared += ((xs[i] - ni) ** 2) / ni
     }
 
     const powerOfFreedom = values.length - 3
 
     let criticalPointSquared = null
     
-    // table for alpha=7
+    // table for alpha=0.05
     switch (powerOfFreedom) {
         case 1: criticalPointSquared = 3.84; break
         case 2: criticalPointSquared = 5.99; break
