@@ -133,6 +133,10 @@ label {
     width: 100%;
 }
 
+.content {
+    max-width: 6rem;
+}
+
 input[type=text].fit {
     width: calc(100% - 85px);
 }
@@ -140,4 +144,8 @@ input[type=text].fit {
 canvas {
     max-width: 75vh;
     max-height: 75vh;
+}
+
+.margin-top {
+    margin-top: 25px;
 }

@@ -27,7 +27,7 @@
                         </thead>
                         <tbody class="data">
                             <tr>
-                                <td><input type="text" placeholder="3.4" data-start></td>
+                                <td><input type="text" placeholder="3.45" data-start></td>
                                 <td><input type="text" placeholder="3.55" data-end></td>
                                 <td><input type="text" placeholder="10" data-value></td>
                             </tr>
@@ -94,18 +94,20 @@
             </div>
             <div class="action-answer">
                 <div class="section">
-                    <sapn class="title">Level of significance:</sapn>
-                    <input type="text" readonly data-significance>
+                    <span class="title">Level of significance:</span>
+                    <input type="text" class="content centered" data-significance readonly >
                 </div>
                 <div class="section">
+                    <span class="title">Interval statistical series:</span>
                     <table>
                         <thead data-thead></thead>
                         <tbody data-tbody></tbody>
                     </table>
+                    <canvas id="chart-1" class="margin-top"></canvas>
                 </div>
                 <div class="section">
-                    <sapn class="title">Some chart</sapn>
-                    <canvas id="chart-1"></canvas>
+                    <span class="title">Hypothesis:</span>
+                    <input type="text" data-hypothesis readonly>
                 </div>
             </div>
         </div>
