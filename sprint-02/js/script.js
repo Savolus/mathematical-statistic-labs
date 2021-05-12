@@ -74,12 +74,14 @@ calculateTask1Element.addEventListener('click', () => {
     chart1 && chart1.destroy()
     
     const significanceElement = task1Element.querySelector('[data-significance]')
-    const theadElement = task1Element.querySelector('[data-thead]')
-    const tbodyElement = task1Element.querySelector('[data-tbody]')
-    const hypothesisElement = task1Element.querySelector('[data-hypothesis]')
 
-    theadElement.innerHTML = ''
-    tbodyElement.innerHTML = ''
+    const theadIntervalElement = task1Element.querySelector('[data-thead-interval]')
+    const tbodyIntervalElement = task1Element.querySelector('[data-tbody-interval]')
+
+    const hypothesisH0Element = task1Element.querySelector('[data-hypothesis-0]')
+
+    theadIntervalElement.innerHTML = ''
+    tbodyIntervalElement.innerHTML = ''
 
     const table = parseTable(dataElement)
     const alpha = 0.05
@@ -90,7 +92,6 @@ calculateTask1Element.addEventListener('click', () => {
     const intervals = table.map(({ start, end }) => { return { start, end }})
     const values = table.map(({ value }) => value)
 
-    const step = +(table[0].end - table[0].start).toFixed(5)
     const sum = values.reduce((acc, value) => acc += value)
     const frequences = values.map(value => value / sum)
 
@@ -110,7 +111,7 @@ calculateTask1Element.addEventListener('click', () => {
         intervalTR.appendChild(th)
     })
 
-    theadElement.appendChild(intervalTR)
+    theadIntervalElement.appendChild(intervalTR)
 
     const valueTR = document.createElement('tr')
 
@@ -128,7 +129,7 @@ calculateTask1Element.addEventListener('click', () => {
         valueTR.appendChild(td)
     })
 
-    tbodyElement.appendChild(valueTR)
+    tbodyIntervalElement.appendChild(valueTR)
 
     const frequenceTR = document.createElement('tr')
 
@@ -146,8 +147,6 @@ calculateTask1Element.addEventListener('click', () => {
         frequenceTR.appendChild(td)
     })
 
-    tbodyElement.appendChild(frequenceTR)
-
     chart1 = new Chart(chart1ElementContext, {
         type: 'bar',
         data: {
@@ -161,7 +160,11 @@ calculateTask1Element.addEventListener('click', () => {
         }
     })
 
-    console.log(H0(values, intervals, step))
+    tbodyIntervalElement.appendChild(frequenceTR)
+
+    const hypothesisH0 = H0(intervals, values)
+
+    hypothesisH0Element.value = `${hypothesisH0} => ${hypothesisH0 ? 'Approved' : 'Not approved'}`
 
     task1Element.querySelector('.action-answer').style.display = 'block'
 })

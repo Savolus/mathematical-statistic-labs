@@ -149,3 +149,7 @@ canvas {
 .margin-top {
     margin-top: 25px;
 }
+
+table {
+    border-collapse: collapse;
+}

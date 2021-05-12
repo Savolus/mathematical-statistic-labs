@@ -1,29 +1,29 @@
 import mean from './mean.js'
-import variance from './variance.js'
+import { varianceStandart, varianceCorrected } from './variance.js'
 
-const u = (x, meanValue, deviationValue) => (x - meanValue) / deviationValue
-const f = u => Math.exp((u ** 2) / 2) / Math.sqrt(2 * Math.PI)
-const n = (x, mult, meanValue, deviationValue) => mult * f(u(x, meanValue, deviationValue))
+export default (intervals, frequences) => {
+    const variantesUnique = intervals.map(({ start, end }) => +((start + end) / 2).toFixed(5))
 
-export default (values, intervals) => {
-    const xs = intervals.map(({ start, end }) => +((end + start) / 2).toFixed(5))
-    const meanValue = mean(xs)
-    const varianceValue = variance(xs, meanValue)
-    const deviationValue = Math.sqrt(varianceValue)
+    let variantesNotUnique = []
 
-    let observedValueSquared = 0
+    for (let i = 0; i < variantesUnique.length; i++) {
+        const variantesRepeated = []
 
-    for (let i = 0; i < xs.length; i++) {
-        const step = +(intervals[i].end - intervals[i].start).toFixed(5)
-        const ni = n(xs[i], (values.length * step) / deviationValue, meanValue, deviationValue)
-        
-        observedValueSquared += ((xs[i] - ni) ** 2) / ni
+        variantesRepeated.length = frequences[i]
+        variantesRepeated.fill(variantesUnique[i])
+
+        variantesNotUnique = [...variantesNotUnique, ...variantesRepeated]
     }
 
-    const powerOfFreedom = values.length - 3
+    const meanValue = mean(variantesNotUnique)
+    const varianceValueStandart = varianceStandart(variantesNotUnique, meanValue)
+    const varianceValueCorrected = varianceCorrected(variantesNotUnique, meanValue)
 
-    let criticalPointSquared = null
-    
+    const observedValueSquared = (variantesUnique.length - 1) * varianceValueStandart / varianceValueCorrected
+
+    const powerOfFreedom = variantesUnique.length - 3
+    let criticalPointSquared = 0
+
     // table for alpha=0.05
     switch (powerOfFreedom) {
         case 1: criticalPointSquared = 3.84; break

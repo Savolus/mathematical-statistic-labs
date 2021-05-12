@@ -329,7 +329,7 @@ calculateTask3Element.addEventListener('click', () => {
 
     asymmetryElement.value = `${asymmetryOutput.toFixed(5)}  =>  ${Math.abs(asymmetryOutput) < 0.5 ? 'Symmetric' : 'Asymmetric'}`
 
-    const excessOutput = moment4 / (deviationOutput ** 4)
+    const excessOutput = moment4 / (deviationOutput ** 4) - 3
 
     excessElement.value = excessOutput.toFixed(5)
 
