@@ -79,6 +79,10 @@ calculateTask1Element.addEventListener('click', () => {
     const tbodyIntervalElement = task1Element.querySelector('[data-tbody-interval]')
 
     const hypothesisH0Element = task1Element.querySelector('[data-hypothesis-0]')
+    const hypothesisH0ObservedElement = task1Element.querySelector('[data-hypothesis-0-observed]')
+    const hypothesisH0CriticalPointElement = task1Element.querySelector('[data-hypothesis-0-critical]')
+    const hypothesisH0PowerOfFreedomElement = task1Element.querySelector('[data-hypothesis-0-power]')
+    const tbodyIterationElement = task1Element.querySelector('[data-tbody-iteration]')
 
     theadIntervalElement.innerHTML = ''
     tbodyIntervalElement.innerHTML = ''
@@ -147,6 +151,8 @@ calculateTask1Element.addEventListener('click', () => {
         frequenceTR.appendChild(td)
     })
 
+    tbodyIntervalElement.appendChild(frequenceTR)
+
     chart1 = new Chart(chart1ElementContext, {
         type: 'bar',
         data: {
@@ -160,11 +166,34 @@ calculateTask1Element.addEventListener('click', () => {
         }
     })
 
-    tbodyIntervalElement.appendChild(frequenceTR)
+    const { H0: H0Answer, table: H0Table, result: H0Results } = H0(intervals, values)
 
-    const hypothesisH0 = H0(intervals, values)
+    console.log(H0Answer, H0Table, H0Results)
 
-    hypothesisH0Element.value = `${hypothesisH0} => ${hypothesisH0 ? 'Approved' : 'Not approved'}`
+    hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
+    hypothesisH0ObservedElement.value = H0Results.observedValue
+    hypothesisH0CriticalPointElement.value = H0Results.criticalPointValue
+    hypothesisH0PowerOfFreedomElement.value = H0Results.powerOfFreedom
+
+    H0Table.forEach(iteration => {
+        const hypothesisH0TR = document.createElement('tr')
+
+        for (const key in iteration) {
+            const td = document.createElement('td')
+            const input = document.createElement('input')
+
+            input.type = 'text'
+            input.readOnly = true
+            input.value = +iteration[key].toFixed(5)
+            input.classList.add('centered')
+            input.classList.add('content')
+
+            td.appendChild(input)
+            hypothesisH0TR.appendChild(td)
+        }
+
+        tbodyIterationElement.appendChild(hypothesisH0TR)
+    })
 
     task1Element.querySelector('.action-answer').style.display = 'block'
 })

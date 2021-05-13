@@ -78,7 +78,8 @@ export default (intervals, frequences) => {
         table,
         result: {
             observedValue,
-            criticalPointValue
+            criticalPointValue,
+            powerOfFreedom: k
         }
     }
 }
