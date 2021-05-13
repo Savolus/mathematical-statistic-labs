@@ -1,4 +1,4 @@
-import H0 from "./H0.js"
+import H0Pirson from "./H0Pirson.js"
 
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
@@ -15,6 +15,8 @@ const chart1Element = task1Element.querySelector('#chart-1')
 const chart1ElementContext = chart1Element.getContext('2d')
 
 let chart1 = null
+
+const alpha = 0.05
 
 const parseTable = tableElement => {
     const trs = [...tableElement.querySelectorAll('tr')]
@@ -73,8 +75,6 @@ changeAmountElement.addEventListener('change', () => {
 calculateTask1Element.addEventListener('click', () => {
     chart1 && chart1.destroy()
     
-    const significanceElement = task1Element.querySelector('[data-significance]')
-
     const theadIntervalElement = task1Element.querySelector('[data-thead-interval]')
     const tbodyIntervalElement = task1Element.querySelector('[data-tbody-interval]')
 
@@ -88,16 +88,13 @@ calculateTask1Element.addEventListener('click', () => {
     tbodyIntervalElement.innerHTML = ''
 
     const table = parseTable(dataElement)
-    const alpha = 0.05
-
-    significanceElement.value = alpha
 
     const intervalStrings = table.map(({ start, end }) => `[${start}, ${end})`)
     const intervals = table.map(({ start, end }) => { return { start, end }})
-    const values = table.map(({ value }) => value)
+    const frequences = table.map(({ value }) => value)
 
-    const sum = values.reduce((acc, value) => acc += value)
-    const frequences = values.map(value => value / sum)
+    const sum = frequences.reduce((acc, value) => acc += value)
+    const relatives = frequences.map(value => value / sum)
 
     const intervalTR = document.createElement('tr')
 
@@ -119,7 +116,7 @@ calculateTask1Element.addEventListener('click', () => {
 
     const valueTR = document.createElement('tr')
 
-    values.forEach(value => {
+    frequences.forEach(value => {
         const td = document.createElement('td')
         const input = document.createElement('input')
 
@@ -137,13 +134,13 @@ calculateTask1Element.addEventListener('click', () => {
 
     const frequenceTR = document.createElement('tr')
 
-    frequences.forEach(frequence => {
+    relatives.forEach(relatives => {
         const td = document.createElement('td')
         const input = document.createElement('input')
 
         input.type = 'text'
         input.readOnly = true
-        input.value = frequence.toFixed(5)
+        input.value = relatives.toFixed(5)
         input.classList.add('centered')
         input.classList.add('content')
 
@@ -161,14 +158,12 @@ calculateTask1Element.addEventListener('click', () => {
                 label: 'Interval statistical series',
                 backgroundColor: 'rgb(255, 99, 132, .75)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: values
+                data: frequences
             }]
         }
     })
 
-    const { H0: H0Answer, table: H0Table, result: H0Results } = H0(intervals, values)
-
-    console.log(H0Answer, H0Table, H0Results)
+    const { H0: H0Answer, table: H0Table, result: H0Results } = H0Pirson(intervals, frequences)
 
     hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
     hypothesisH0ObservedElement.value = H0Results.observedValue
@@ -200,6 +195,13 @@ calculateTask1Element.addEventListener('click', () => {
 
 calculateTask2Element.addEventListener('click', () => {
     const table = parseTable(dataElement)
+
+    const intervals = table.map(({ start, end }) => { return { start, end }})
+    const frequences = table.map(({ value }) => value)
+
+    const sum = frequences.reduce((acc, value) => acc += value)
+    const relative = frequences.map(value => value / sum)
+
 
     task2Element.querySelector('.action-answer').style.display = 'block'
 })

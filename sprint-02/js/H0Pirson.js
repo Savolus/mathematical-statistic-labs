@@ -5,7 +5,7 @@ import criticalPoint from './criticalPoint.js';
 
 export default (intervals, frequences) => {
     const variantesUnique = intervals.map(({ start, end }) => +((start + end) / 2).toFixed(5))
-    let variantesNotUnique = []
+    const variantesNotUnique = []
 
     for (let i = 0; i < variantesUnique.length; i++) {
         const variantesRepeated = []
@@ -13,7 +13,7 @@ export default (intervals, frequences) => {
         variantesRepeated.length = frequences[i]
         variantesRepeated.fill(variantesUnique[i])
 
-        variantesNotUnique = [...variantesNotUnique, ...variantesRepeated]
+        variantesNotUnique.push(...variantesRepeated)
     }
 
     const meanValue = mean(variantesNotUnique)
@@ -70,8 +70,6 @@ export default (intervals, frequences) => {
 
     // table for alpha=0.05
     const criticalPointValue = criticalPoint(k)
-
-    console.table({ k, observedValue, criticalPointValue })
 
     return {
         H0: observedValue < criticalPointValue,
