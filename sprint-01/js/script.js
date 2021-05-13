@@ -228,7 +228,7 @@ calculateTask2Element.addEventListener('click', () => {
     answerElement.innerHTML = output
 
     chart1 = new Chart(chart1ElementContext, {
-        type: 'radar',
+        type: 'line',
         data: {
             labels: resultedSample,
             datasets: [{
