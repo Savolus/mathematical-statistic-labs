@@ -325,7 +325,7 @@ calculateTask3Element.addEventListener('click', () => {
     moment3Element.value = moment3.toFixed(5)
     moment4Element.value = moment4.toFixed(5)
 
-    const asymmetryOutput = ((meanOutput - modes.reduce((acc, value) => acc += value, 0) / modes.length) / deviationOutput)
+    const asymmetryOutput = moment3 / (deviationOutput ** 3)
 
     asymmetryElement.value = `${asymmetryOutput.toFixed(5)}  =>  ${Math.abs(asymmetryOutput) < 0.5 ? 'Symmetric' : 'Asymmetric'}`
 
