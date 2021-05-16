@@ -78,10 +78,6 @@ input[type=text] {
     width: 12rem;
 }
 
-input[type=text].short {
-    width: 4.5rem;
-}
-
 input[type=number] {
     width: 3.5rem;
 }
@@ -96,6 +92,11 @@ label {
     font-size: 24px;
     display: block;
     margin-right: 5px;
+}
+
+.sample-row {
+    display: flex;
+    justify-content: space-between;
 }
 
 .container > div {
@@ -135,19 +136,17 @@ label {
     text-align: center;
 }
 
-.fit {
-    width: 100%;
+.full {
+    min-width: 100%;
 }
 
 input[type=text].fit {
-    width: calc(100% - 85px);
+    width: calc(100% - 82.5px);
 }
 
 canvas {
-    width: 75vh;
-    height: 75vh;
-    max-width: 75vh;
-    max-height: 75vh;
+    width: 100vh;
+    max-width: 100vh;
 }
 
 table {

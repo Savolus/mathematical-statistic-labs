@@ -5,6 +5,11 @@ export default frequence => {
 
     while (true) {
         const keys = Object.keys(cpy)
+
+        if (!keys.length) {
+            break
+        }
+
         const key = keys.reduce((a, b) => cpy[a] > cpy[b] ? a : b)
 
         if (!lastKey) {
@@ -24,5 +29,9 @@ export default frequence => {
         delete cpy[key]
     }
 
-    return maxes
+    const modes = Object.keys(maxes)
+
+    modes.sort((a, b) => a - b)
+
+    return modes
 }

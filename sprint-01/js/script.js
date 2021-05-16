@@ -1,9 +1,11 @@
 import calc from "./calc.js";
+import createContainer from "./createContainer.js";
+import createDSI from "./createDSI.js";
 import mean from "./mean.js";
 import median from "./median.js";
 import mode from "./mode.js";
 import moment from "./moment.js";
-import variance from "./variance.js";
+import { varianceStandart, varianceCorrected } from "./variance.js";
 
 const samplesElement = document.querySelector('.data')
 const changerElement = document.querySelector('#amount')
@@ -85,7 +87,8 @@ changerElement.addEventListener('change', () => {
         const div = document.createElement('div')
 
         div.classList.add('section')
-        div.classList.add('fit')
+        div.classList.add('full')
+        div.classList.add('sample-row')
 
         const label = document.createElement('label')
 
@@ -97,6 +100,7 @@ changerElement.addEventListener('change', () => {
         input.type = 'text'
         input.id = `sample-${alphabet[i]}`.toLowerCase()
         input.classList.add('fit')
+        input.placeholder = '0 1 2 3 4 5 6 7 8 9'
 
         div.appendChild(label)
         div.appendChild(input)
@@ -123,62 +127,23 @@ calculateTask1Element.addEventListener('click', () => {
 
     samples.forEach((sample, index) => {
 
-        let varianceValue = '['
+        let variationSeriesValue = '['
 
         for (let i = 0; i < sample.length; i++) {
-            varianceValue += sample[i]
+            variationSeriesValue += sample[i]
 
             if (i !== sample.length - 1) {
-                varianceValue += ', ' 
+                variationSeriesValue += ', ' 
             }
         }
 
-        varianceValue += ']'
+        variationSeriesValue += ']'
 
         const rangeValue = `[${sample[0]}, ${sample[sample.length - 1]}]`
 
-        const containerDivElement = document.createElement('div')
-        const containerSpanElement = document.createElement('span')
-
-        containerDivElement.classList.add('section')
-
-        containerSpanElement.innerHTML = `Sample ${alphabet[index]}:`
-        containerSpanElement.classList.add('title')
-        containerSpanElement.classList.add('main')
-        containerSpanElement.classList.add('without')
-
-        const varianceDivElement = document.createElement('div')
-        const varianceSpanElement = document.createElement('span')
-        const varianceInputElement = document.createElement('input')
-
-        varianceDivElement.classList.add('section')
-
-        varianceSpanElement.innerHTML = `Variation Series:`
-        varianceSpanElement.classList.add('title')
-
-        varianceInputElement.value = varianceValue
-        varianceInputElement.type = 'text'
-        varianceInputElement.readOnly = true
-        varianceInputElement.classList.add('fit')
-
-        varianceDivElement.appendChild(varianceSpanElement)
-        varianceDivElement.appendChild(varianceInputElement)
-
-        const rangeDivElement = document.createElement('div')
-        const rangeSpanElement = document.createElement('span')
-        const rangeInputElement = document.createElement('input')
-
-        rangeDivElement.classList.add('section')
-
-        rangeSpanElement.innerHTML = `Range:`
-        rangeSpanElement.classList.add('title')
-
-        rangeInputElement.value = rangeValue
-        rangeInputElement.type = 'text'
-        rangeInputElement.readOnly = true
-
-        rangeDivElement.appendChild(rangeSpanElement)
-        rangeDivElement.appendChild(rangeInputElement)
+        const containerDivElement = createContainer(`Sample ${alphabet[index]}:`)
+        const variationSeriesDivElement = createDSI(variationSeriesValue, 'Variation Series:', { div: ['full'], input: ['full'] })
+        const rangeDivElement = createDSI(rangeValue, 'Range:', { input: ['centered'] })
     
         const tableDivElement = document.createElement('div')
         const tableSpanElement = document.createElement('span')
@@ -245,8 +210,7 @@ calculateTask1Element.addEventListener('click', () => {
         tableDivElement.appendChild(tableSpanElement)
         tableDivElement.appendChild(tableTableElement)
 
-        containerDivElement.appendChild(containerSpanElement)
-        containerDivElement.appendChild(varianceDivElement)
+        containerDivElement.appendChild(variationSeriesDivElement)
         containerDivElement.appendChild(rangeDivElement)
         containerDivElement.appendChild(tableDivElement)
 
@@ -296,16 +260,8 @@ calculateTask2Element.addEventListener('click', () => {
             formula += '</i><br>'
         }
 
-        const containerDivElement = document.createElement('div')
-        const containerSpanElement = document.createElement('span')
-
-        containerDivElement.classList.add('section')
-
-        containerSpanElement.innerHTML = `Sample ${alphabet[index]}:`
-        containerSpanElement.classList.add('title')
-        containerSpanElement.classList.add('main')
-        containerSpanElement.classList.add('without')
-
+        const containerDivElement = createContainer(`Sample ${alphabet[index]}:`)
+        
         const chart1DivElement = document.createElement('div')
         const chart1SpanElement = document.createElement('span')
         const chart1CanvasElement = document.createElement('canvas')
@@ -413,7 +369,6 @@ calculateTask2Element.addEventListener('click', () => {
         chart3DivElement.appendChild(chart3SpanElement)
         chart3DivElement.appendChild(chart3CanvasElement)
 
-        containerDivElement.appendChild(containerSpanElement)
         containerDivElement.appendChild(chart1DivElement)
         containerDivElement.appendChild(chart2DivElement)
         containerDivElement.appendChild(functionDivElement)
@@ -426,76 +381,71 @@ calculateTask2Element.addEventListener('click', () => {
 })
 
 calculateTask3Element.addEventListener('click', () => {   
-    const meanElement = task3Element.querySelector('[data-mean]')
-    const medianElement = task3Element.querySelector('[data-median]')
-    const modeElement = task3Element.querySelector('[data-mode]')
-    const varianceElement = task3Element.querySelector('[data-variance]')
-    const standardSampleElement = task3Element.querySelector('[data-standard=sample]')
-    const coefficientElement = task3Element.querySelector('[data-coefficient]')
-    const moment3Element = task3Element.querySelector('[data-moment-3]')
-    const moment4Element = task3Element.querySelector('[data-moment-4]')
-    const asymmetryElement = task3Element.querySelector('[data-asymmetry]')
-    const excessElement = task3Element.querySelector('[data-excess]')
-    const fixedElement = task3Element.querySelector('[data-fixed]')
-    const standardCorrectElement = task3Element.querySelector('[data-standard=correct]')
-
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let sample = []
+    let samples = []
 
     for (let i = 0; i < changerElement.value; i++) {
         const input = samplesElements[i].querySelector('input')
 
-        sample.push(...parseSample(input.value ? input.value : input.placeholder))
+        samples.push(parseSample(input.value ? input.value : input.placeholder))
     }
 
-    sample.sort((a, b) => a - b)
+    samples.forEach(sample => sample.sort((a, b) => a - b))
 
-    const [, frequence] = calc(sample)
+    const actionAnswerElement = task3Element.querySelector('.action-answer')
 
-    const meanOutput = mean(sample).toFixed(5)
+    actionAnswerElement.innerHTML = ''
 
-    meanElement.value = meanOutput
-    medianElement.value = median(sample).toFixed(5)
+    samples.forEach((sample, index) => {
+        const [, frequence] = calc(sample)
 
-    const modes = Object.keys(mode(frequence)).map(value => +value)
-    let modeOutput = ''
+        const meanValue = mean(sample)
+        const medianValue = median(sample)
+        const modesValue = mode(frequence)
+        let modeStringValue = modesValue.reduce((str, value) => str += `${value}, `, '')
+        modeStringValue = modeStringValue.slice(0, modeStringValue.length - 2)
+        const varianceStandartValue = varianceStandart(sample, meanValue)
+        const deviationStandartValue = Math.sqrt(varianceStandartValue)
+        const coefficientValue = deviationStandartValue / meanValue
+        const moment3 = moment(sample, meanValue, 3)
+        const moment4 = moment(sample, meanValue, 4)
+        const asymmetryValue = moment3 / (deviationStandartValue ** 3)
+        const excessValue = moment4 / (deviationStandartValue ** 4) - 3
+        const varianceCorrectedValue = varianceCorrected(sample, meanValue)
+        const deviationCorrectedValue = Math.sqrt(varianceCorrectedValue)
 
-    for (const key of modes) {
-        modeOutput += `${key}, `
-    }
+        const containerDivElement = createContainer(`Sample ${alphabet[index]}:`)
 
-    modeOutput = modeOutput.slice(0, modeOutput.length - 2)
+        const meanDivElement = createDSI(meanValue, 'Mean:')
+        const medianDivElement = createDSI(medianValue, 'Median:')
+        const modeDivElement = createDSI(modeStringValue, 'Mode:')
+        const varianceStandartDivElement = createDSI(varianceStandartValue, 'Sample Standart Variance:')
+        const deviationStandartDivElement = createDSI(deviationStandartValue, 'Sample Standart Deviation:')
+        const coefficientDivElement = createDSI(coefficientValue, 'Coefficient of variation:')
+        const moment3DivElement = createDSI(moment3, 'Central Moment 3:')
+        const moment4DivElement = createDSI(moment4, 'Central Moment 4:')
+        const asymmetryDivElement = createDSI(asymmetryValue, 'Asymmetry:')
+        const excessDivElement = createDSI(excessValue, 'Excess:')
+        const varianceCorrectedDivElement = createDSI(varianceCorrectedValue, 'Sample Corrected Variance:')
+        const deviationCorrectedDivElement = createDSI(deviationCorrectedValue, 'Sample Corrected Deviation:')
+        
+        containerDivElement.appendChild(meanDivElement)
+        containerDivElement.appendChild(medianDivElement)
+        containerDivElement.appendChild(modeDivElement)
+        containerDivElement.appendChild(varianceStandartDivElement)
+        containerDivElement.appendChild(deviationStandartDivElement)
+        containerDivElement.appendChild(coefficientDivElement)
+        containerDivElement.appendChild(moment3DivElement)
+        containerDivElement.appendChild(moment4DivElement)
+        containerDivElement.appendChild(asymmetryDivElement)
+        containerDivElement.appendChild(excessDivElement)
+        containerDivElement.appendChild(varianceCorrectedDivElement)
+        containerDivElement.appendChild(deviationCorrectedDivElement)
 
-    modeElement.value = modeOutput
+        actionAnswerElement.appendChild(containerDivElement)
+    })
 
-    const varianceSampleOutput = variance(sample, meanOutput)
-    const deviationOutput = Math.sqrt(varianceSampleOutput)
-
-    varianceElement.value = varianceSampleOutput.toFixed(5)
-    standardSampleElement.value = deviationOutput.toFixed(5)
-    coefficientElement.value = (deviationOutput / meanOutput).toFixed(5)
-
-    const moment3 = moment(sample, meanOutput, 3)
-    const moment4 = moment(sample, meanOutput, 4)
-
-    moment3Element.value = moment3.toFixed(5)
-    moment4Element.value = moment4.toFixed(5)
-
-    const asymmetryOutput = moment3 / (deviationOutput ** 3)
-
-    asymmetryElement.value = `${asymmetryOutput.toFixed(5)}  =>  ${Math.abs(asymmetryOutput) < 0.5 ? 'Symmetric' : 'Asymmetric'}`
-
-    const excessOutput = moment4 / (deviationOutput ** 4) - 3
-
-    excessElement.value = excessOutput.toFixed(5)
-
-    const varianceFixedOutput = varianceSampleOutput * (sample.length - 1) / sample.length
-    const correctedDeviationOutput = Math.sqrt(varianceFixedOutput)
-
-    fixedElement.value = varianceFixedOutput.toFixed(5)
-    standardCorrectElement.value = correctedDeviationOutput.toFixed(5)
-
-    task3Element.querySelector('.action-answer').style.display = 'block'
+    actionAnswerElement.style.display = 'block'
 })
 
 calculateTask4Element.addEventListener('click', () => {
