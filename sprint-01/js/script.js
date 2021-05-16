@@ -20,56 +20,13 @@ const calculateTask3Element = task3Element.querySelector('.calculate')
 const calculateTask4Element = task4Element.querySelector('.calculate')
 const calculateTask5Element = task5Element.querySelector('.calculate')
 
-const chart1Element = task2Element.querySelector('#chart-1')
-const chart2Element = task2Element.querySelector('#chart-2')
-const chart3Element = task2Element.querySelector('#chart-3')
-
-const chart1ElementContext = chart1Element.getContext('2d')
-const chart2ElementContext = chart2Element.getContext('2d')
-const chart3ElementContext = chart3Element.getContext('2d')
-
-let chart1 = null, chart2 = null, chart3 = null
+const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 const parseSample = str => str.trim().replace(/\s+/g, ' ').split(' ').map(value => {
     value.includes(',') && (value = value.replace(',', '.'))
 
     return +value
 })
-
-const renderTaks1 = table => {
-    const answerActionElement = task1Element.querySelector('.action-answer')
-    const answerTableElement = answerActionElement.querySelector('.answer')
-
-    answerTableElement.innerHTML = ''
-
-    for (let i = 0; i < table[0].length; i++) {
-        const tr = document.createElement('tr')
-
-        for (let j = 0; j < table.length; j++) {
-            const td = document.createElement('td')
-            const input = document.createElement('input')
-
-            input.type = 'text'
-
-            if (j === 1) {
-                input.value = table[j][table[0][i]]
-            } else if (j === 3 || j === 4) {
-                input.value = table[j][i].toFixed(5)
-            } else {
-                input.value = table[j][i]
-            }
-
-            input.readOnly = true
-
-            td.appendChild(input)
-            tr.appendChild(td)
-        }
-
-        answerTableElement.appendChild(tr)
-    }
-
-    answerActionElement.style.display = 'block'
-}
 
 const z_score = p => {
     if (p > 1) {
@@ -118,8 +75,6 @@ const deviationFind = (sample, p) => {
 }
 
 changerElement.addEventListener('change', () => {
-    const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-
     samplesElement.innerHTML = ''
 
     if (changerElement.value < 0 || changerElement.value > 26) {
@@ -135,7 +90,7 @@ changerElement.addEventListener('change', () => {
         const label = document.createElement('label')
 
         label.innerHTML = `Sample ${alphabet[i]}:`
-        label.for = `sample-${alphabet[i]}`.toLowerCase()
+        label.setAttribute('for', `sample-${alphabet[i]}`.toLowerCase())
 
         const input = document.createElement('input')
 
@@ -152,121 +107,322 @@ changerElement.addEventListener('change', () => {
 
 calculateTask1Element.addEventListener('click', () => {
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    const sample = []
+    const samples = []
 
     for (let i = 0; i < changerElement.value; i++) {
         const input = samplesElements[i].querySelector('input')
 
-        sample.push(...parseSample(input.value ? input.value : input.placeholder))
+        samples.push(parseSample(input.value ? input.value : input.placeholder))
     }
 
-    sample.sort((a, b) => a - b)
+    samples.forEach(sample => sample.sort((a, b) => a - b))
 
-    const seriesElement = task1Element.querySelector('.series')
-    const rangeElement = task1Element.querySelector('.range')
+    const actionAnswerElement = task1Element.querySelector('.action-answer')
 
-    let output = '['
+    actionAnswerElement.innerHTML = ''
 
-    for (let i = 0; i < sample.length; i++) {
-        output += sample[i]
+    samples.forEach((sample, index) => {
 
-        if (i !== sample.length - 1) {
-            output += ', ' 
+        let varianceValue = '['
+
+        for (let i = 0; i < sample.length; i++) {
+            varianceValue += sample[i]
+
+            if (i !== sample.length - 1) {
+                varianceValue += ', ' 
+            }
         }
-    }
 
-    output += ']'
+        varianceValue += ']'
 
-    seriesElement.value = output
-    rangeElement.value = `[${sample[0]}, ${sample[sample.length - 1]}]`
+        const rangeValue = `[${sample[0]}, ${sample[sample.length - 1]}]`
 
-    renderTaks1(calc(sample))
+        const containerDivElement = document.createElement('div')
+        const containerSpanElement = document.createElement('span')
+
+        containerDivElement.classList.add('section')
+
+        containerSpanElement.innerHTML = `Sample ${alphabet[index]}:`
+        containerSpanElement.classList.add('title')
+        containerSpanElement.classList.add('main')
+        containerSpanElement.classList.add('without')
+
+        const varianceDivElement = document.createElement('div')
+        const varianceSpanElement = document.createElement('span')
+        const varianceInputElement = document.createElement('input')
+
+        varianceDivElement.classList.add('section')
+
+        varianceSpanElement.innerHTML = `Variation Series:`
+        varianceSpanElement.classList.add('title')
+
+        varianceInputElement.value = varianceValue
+        varianceInputElement.type = 'text'
+        varianceInputElement.readOnly = true
+        varianceInputElement.classList.add('fit')
+
+        varianceDivElement.appendChild(varianceSpanElement)
+        varianceDivElement.appendChild(varianceInputElement)
+
+        const rangeDivElement = document.createElement('div')
+        const rangeSpanElement = document.createElement('span')
+        const rangeInputElement = document.createElement('input')
+
+        rangeDivElement.classList.add('section')
+
+        rangeSpanElement.innerHTML = `Range:`
+        rangeSpanElement.classList.add('title')
+
+        rangeInputElement.value = rangeValue
+        rangeInputElement.type = 'text'
+        rangeInputElement.readOnly = true
+
+        rangeDivElement.appendChild(rangeSpanElement)
+        rangeDivElement.appendChild(rangeInputElement)
+    
+        const tableDivElement = document.createElement('div')
+        const tableSpanElement = document.createElement('span')
+        const tableTableElement = document.createElement('table')
+        const tableTheadElement = document.createElement('thead')
+        const tableTbodyElement = document.createElement('tbody')
+
+        const thValues = ["Sample", "Frequence", "Accumulated frequence", "Relative frequence", "Cumulative relative frequence"]
+
+        tableDivElement.classList.add('section')
+        
+        tableSpanElement.innerHTML = `Table:`
+        tableSpanElement.classList.add('title')
+
+        const tableTrThElement = document.createElement('tr')
+
+        thValues.forEach(value => {
+            const th = document.createElement('th')
+            const input = document.createElement('input')
+
+            input.type = 'text'
+            input.value = value
+            input.readOnly = true
+            input.classList.add('centered')
+
+            th.appendChild(input)
+            tableTrThElement.appendChild(th)
+        })
+
+        tableTheadElement.appendChild(tableTrThElement)
+
+        const calculatedValue = calc(sample)
+
+        for (let i = 0; i < calculatedValue[0].length; i++) {
+            const tr = document.createElement('tr')
+    
+            for (let j = 0; j < calculatedValue.length; j++) {
+                const td = document.createElement('td')
+                const input = document.createElement('input')
+    
+                input.type = 'text'
+    
+                if (j === 1) {
+                    input.value = calculatedValue[j][calculatedValue[0][i]]
+                } else if (j === 3 || j === 4) {
+                    input.value = calculatedValue[j][i].toFixed(5)
+                } else {
+                    input.value = calculatedValue[j][i]
+                }
+    
+                input.readOnly = true
+                input.classList.add('centered')
+    
+                td.appendChild(input)
+                tr.appendChild(td)
+            }
+    
+            tableTbodyElement.appendChild(tr)
+        }
+
+        tableTableElement.appendChild(tableTheadElement)
+        tableTableElement.appendChild(tableTbodyElement)
+
+        tableDivElement.appendChild(tableSpanElement)
+        tableDivElement.appendChild(tableTableElement)
+
+        containerDivElement.appendChild(containerSpanElement)
+        containerDivElement.appendChild(varianceDivElement)
+        containerDivElement.appendChild(rangeDivElement)
+        containerDivElement.appendChild(tableDivElement)
+
+        actionAnswerElement.appendChild(containerDivElement)
+    })
+
+    actionAnswerElement.style.display = 'block'
 })
 
 calculateTask2Element.addEventListener('click', () => {
-    chart1 && chart1.destroy()
-    chart2 && chart2.destroy()
-    chart3 && chart3.destroy()
-
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let sample = []
+    let samples = []
 
     for (let i = 0; i < changerElement.value; i++) {
         const input = samplesElements[i].querySelector('input')
 
-        sample.push(...parseSample(input.value ? input.value : input.placeholder))
+        samples.push(parseSample(input.value ? input.value : input.placeholder))
     }
 
-    sample.sort((a, b) => a - b)
+    samples.forEach(sample => sample.sort((a, b) => a - b))
 
-    const [resultedSample, frequenceObj,,,relativeCumulative] = calc(sample)
+    const actionAnswerElement = task2Element.querySelector('.action-answer')
 
-    const frequenceArr = []
+    actionAnswerElement.innerHTML = ''
 
-    for (let i = 0; i < resultedSample.length; i++) {
-        frequenceArr.push(frequenceObj[resultedSample[i]])
-    }
-
-    const answerElement = task2Element.querySelector('.answer')
-
-    let output = ''
-
-    for (let i = 0; i < relativeCumulative.length; i++) {
-        output += `${relativeCumulative[i].toFixed(5)}, <i>`
-
-        if (i === 0) {
-            output += `x &#8804; ${resultedSample[i]}`
-        } else if (i === relativeCumulative.length - 1) {
-            output += `x &gt; ${resultedSample[i]}`
-        } else {
-            output += `${resultedSample[i - 1]} &lt; x &#8804; ${resultedSample[i]}`
+    samples.forEach((sample, index) => {
+        const [resultedSample, frequenceObj,,,relativeCumulative] = calc(sample)
+        const frequenceArr = []
+    
+        for (let i = 0; i < resultedSample.length; i++) {
+            frequenceArr.push(frequenceObj[resultedSample[i]])
+        }
+    
+        let formula = ''
+    
+        for (let i = 0; i < relativeCumulative.length; i++) {
+            formula += `${relativeCumulative[i].toFixed(5)}, <i>`
+    
+            if (i === 0) {
+                formula += `x &#8804; ${resultedSample[i]}`
+            } else if (i === relativeCumulative.length - 1) {
+                formula += `x &gt; ${resultedSample[i]}`
+            } else {
+                formula += `${resultedSample[i - 1]} &lt; x &#8804; ${resultedSample[i]}`
+            }
+    
+            formula += '</i><br>'
         }
 
-        output += '</i><br>'
-    }
+        const containerDivElement = document.createElement('div')
+        const containerSpanElement = document.createElement('span')
 
-    answerElement.innerHTML = output
+        containerDivElement.classList.add('section')
 
-    chart1 = new Chart(chart1ElementContext, {
-        type: 'line',
-        data: {
-            labels: resultedSample,
-            datasets: [{
-                label: 'Variation Series',
-                backgroundColor: 'rgb(255, 99, 132, .5)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: frequenceArr
-            }]
-        }
+        containerSpanElement.innerHTML = `Sample ${alphabet[index]}:`
+        containerSpanElement.classList.add('title')
+        containerSpanElement.classList.add('main')
+        containerSpanElement.classList.add('without')
+
+        const chart1DivElement = document.createElement('div')
+        const chart1SpanElement = document.createElement('span')
+        const chart1CanvasElement = document.createElement('canvas')
+        const chart1CanvasElementContext = chart1CanvasElement.getContext('2d')
+
+        chart1DivElement.classList.add('section')
+
+        chart1SpanElement.innerHTML = 'Polygon chart:'
+        chart1SpanElement.classList.add('title')
+
+        chart1DivElement.appendChild(chart1SpanElement)
+        chart1DivElement.appendChild(chart1CanvasElement)
+
+        const chart2DivElement = document.createElement('div')
+        const chart2SpanElement = document.createElement('span')
+        const chart2CanvasElement = document.createElement('canvas')
+        const chart2CanvasElementContext = chart2CanvasElement.getContext('2d')
+
+        chart2DivElement.classList.add('section')
+
+        chart2SpanElement.innerHTML = 'Histogram chart:'
+        chart2SpanElement.classList.add('title')
+
+        chart2DivElement.appendChild(chart2SpanElement)
+        chart2DivElement.appendChild(chart2CanvasElement)
+
+        const functionDivElement = document.createElement('div')
+        const functionSpanElement = document.createElement('span')
+        const functionTableElement = document.createElement('table')
+        const functionTbodyElement = document.createElement('tbody')
+        const functionTrElement = document.createElement('tr')
+
+        functionDivElement.classList.add('section')
+
+        functionSpanElement.innerHTML = 'Empirical distribution function:'
+        functionSpanElement.classList.add('title')
+
+        const functionTd1Element = document.createElement('td')
+        const functionTd2Element = document.createElement('td')
+
+        functionTd1Element.innerHTML = 'F*(x) =&nbsp;'
+        functionTd2Element.innerHTML = formula
+
+        functionTrElement.appendChild(functionTd1Element)
+        functionTrElement.appendChild(functionTd2Element)
+
+        functionTbodyElement.appendChild(functionTrElement)
+
+        functionTableElement.appendChild(functionTbodyElement)
+
+        functionDivElement.appendChild(functionSpanElement)
+        functionDivElement.appendChild(functionTableElement)
+
+        const chart3DivElement = document.createElement('div')
+        const chart3SpanElement = document.createElement('span')
+        const chart3CanvasElement = document.createElement('canvas')
+        const chart3CanvasElementContext = chart3CanvasElement.getContext('2d')
+
+        chart3DivElement.classList.add('section')
+
+        chart3SpanElement.innerHTML = 'Empirical distribution function chart:'
+        chart3SpanElement.classList.add('title')
+
+        setTimeout(() => {
+            new Chart(chart1CanvasElementContext, {
+                type: 'line',
+                data: {
+                    labels: resultedSample,
+                    datasets: [{
+                        label: 'Variation Series',
+                        backgroundColor: 'rgb(255, 99, 132, .5)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: frequenceArr
+                    }]
+                }
+            })
+
+            new Chart(chart2CanvasElementContext, {
+                type: 'bar',
+                data: {
+                    labels: resultedSample,
+                    datasets: [{
+                        label: 'Variation Series',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: frequenceArr
+                    }]
+                }
+            })
+
+            new Chart(chart3CanvasElementContext, {
+                type: 'bar',
+                data: {
+                    labels: resultedSample,
+                    datasets: [{
+                        label: 'Variation Series',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: relativeCumulative
+                    }]
+                }
+            })
+        }, 0)
+
+        chart3DivElement.appendChild(chart3SpanElement)
+        chart3DivElement.appendChild(chart3CanvasElement)
+
+        containerDivElement.appendChild(containerSpanElement)
+        containerDivElement.appendChild(chart1DivElement)
+        containerDivElement.appendChild(chart2DivElement)
+        containerDivElement.appendChild(functionDivElement)
+        containerDivElement.appendChild(chart3DivElement)
+
+        actionAnswerElement.appendChild(containerDivElement)
     })
 
-    chart2 = new Chart(chart2ElementContext, {
-        type: 'bar',
-        data: {
-            labels: resultedSample,
-            datasets: [{
-                label: 'Variation Series',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: frequenceArr
-            }]
-        }
-    })
-
-    chart3 = new Chart(chart3ElementContext, {
-        type: 'bar',
-        data: {
-            labels: resultedSample,
-            datasets: [{
-                label: 'Variation Series',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: relativeCumulative
-            }]
-        }
-    })
-
-    task2Element.querySelector('.action-answer').style.display = 'block'
+    actionAnswerElement.style.display = 'block'
 })
 
 calculateTask3Element.addEventListener('click', () => {   
