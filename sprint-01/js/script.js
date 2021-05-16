@@ -6,6 +6,8 @@ import median from "./median.js";
 import mode from "./mode.js";
 import moment from "./moment.js";
 import { varianceStandart, varianceCorrected } from "./variance.js";
+import expectedValueInterval from './expectedValueInterval.js'
+import deviationValueInterval from './deviationValueInterval.js'
 
 const samplesElement = document.querySelector('.data')
 const changerElement = document.querySelector('#amount')
@@ -29,52 +31,6 @@ const parseSample = str => str.trim().replace(/\s+/g, ' ').split(' ').map(value 
 
     return +value
 })
-
-const z_score = p => {
-    if (p > 1) {
-        p *= 0.01
-    }
-    if (p < 0.5) {
-        return -1 * z_score(1 - p)
-    }
-    if (p > 0.92) {
-        if (p === 1) {
-            return Infinity
-        }
-
-        const temp = Math.sqrt(-1 * Math.log(1 - p))
-        
-        return (((2.3212128 * temp + 4.8501413) * temp - 2.2979648) * temp - 2.7871893) / ((1.6370678 * temp + 3.5438892) * temp + 1)
-    }
-
-    p -= 0.5
-
-    const temp = Math.pow(p, 2)
-
-    return p * (((-25.4410605 * temp + 41.3911977) * temp - 18.6150006) * temp + 2.5066282) / ((((3.1308291 * temp - 21.0622410) * temp + 23.0833674) * temp - 8.4735109) * temp + 1)
-}
-
-const expectedValueFind = (sample, p) => {
-    const x = mean(sample)
-    const z = z_score(p)
-    const s = Math.sqrt(variance(sample, x))
-
-    const upper = x - z * s / Math.sqrt(sample.length)
-    const lower = x + z * s / Math.sqrt(sample.length)
-
-    return [x, upper, lower]
-}
-
-const deviationFind = (sample, p) => {
-    const x = mean(sample)
-    const z = z_score(p)
-    const s = Math.sqrt(variance(sample, x))
-
-    const upper = s - z * s / Math.sqrt(sample.length)
-    const lower = s + z * s / Math.sqrt(sample.length)
-
-    return [s, upper, lower]
-}
 
 changerElement.addEventListener('change', () => {
     samplesElement.innerHTML = ''
@@ -111,21 +67,20 @@ changerElement.addEventListener('change', () => {
 
 calculateTask1Element.addEventListener('click', () => {
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    const samples = []
-
-    for (let i = 0; i < changerElement.value; i++) {
-        const input = samplesElements[i].querySelector('input')
+    const samples = samplesElements.reduce((samples, sampleElement) => {
+        const input = sampleElement.querySelector('input')
 
         samples.push(parseSample(input.value ? input.value : input.placeholder))
-    }
-
-    samples.forEach(sample => sample.sort((a, b) => a - b))
+    
+        return samples
+    }, [])
 
     const actionAnswerElement = task1Element.querySelector('.action-answer')
 
     actionAnswerElement.innerHTML = ''
 
     samples.forEach((sample, index) => {
+        sample.sort((a, b) => a - b)
 
         let variationSeriesValue = '['
 
@@ -222,21 +177,21 @@ calculateTask1Element.addEventListener('click', () => {
 
 calculateTask2Element.addEventListener('click', () => {
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let samples = []
-
-    for (let i = 0; i < changerElement.value; i++) {
-        const input = samplesElements[i].querySelector('input')
+    const samples = samplesElements.reduce((samples, sampleElement) => {
+        const input = sampleElement.querySelector('input')
 
         samples.push(parseSample(input.value ? input.value : input.placeholder))
-    }
-
-    samples.forEach(sample => sample.sort((a, b) => a - b))
+    
+        return samples
+    }, [])
 
     const actionAnswerElement = task2Element.querySelector('.action-answer')
 
     actionAnswerElement.innerHTML = ''
 
     samples.forEach((sample, index) => {
+        sample.sort((a, b) => a - b)
+
         const [resultedSample, frequenceObj,,,relativeCumulative] = calc(sample)
         const frequenceArr = []
     
@@ -382,21 +337,21 @@ calculateTask2Element.addEventListener('click', () => {
 
 calculateTask3Element.addEventListener('click', () => {   
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let samples = []
-
-    for (let i = 0; i < changerElement.value; i++) {
-        const input = samplesElements[i].querySelector('input')
+    const samples = samplesElements.reduce((samples, sampleElement) => {
+        const input = sampleElement.querySelector('input')
 
         samples.push(parseSample(input.value ? input.value : input.placeholder))
-    }
 
-    samples.forEach(sample => sample.sort((a, b) => a - b))
+        return samples
+    }, [])
 
     const actionAnswerElement = task3Element.querySelector('.action-answer')
 
     actionAnswerElement.innerHTML = ''
 
     samples.forEach((sample, index) => {
+        sample.sort((a, b) => a - b)
+
         const [, frequence] = calc(sample)
 
         const meanValue = mean(sample)
@@ -449,72 +404,90 @@ calculateTask3Element.addEventListener('click', () => {
 })
 
 calculateTask4Element.addEventListener('click', () => {
-    const expectedValueMomentElement = task4Element.querySelector('[data-expected-moment]')
-    const varianceMomentElement = task4Element.querySelector('[data-variance-moment]')
-    const deviationMomentElement = task4Element.querySelector('[data-deviation-moment]')
-    const expectedValueLikelihoodElement = task4Element.querySelector('[data-expected-likelihood]')
-    const varianceLikelihoodElement = task4Element.querySelector('[data-variance-likelihood]')
-    const deviationLikelihoodElement = task4Element.querySelector('[data-deviation-likelihood]')
-
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let sample = []
+    const samples = samplesElements.reduce((samples, sampleElement) => {
+        const input = sampleElement.querySelector('input')
 
-    for (let i = 0; i < changerElement.value; i++) {
-        const input = samplesElements[i].querySelector('input')
+        samples.push(parseSample(input.value ? input.value : input.placeholder))
+    
+        return samples
+    }, [])
 
-        sample.push(...parseSample(input.value ? input.value : input.placeholder))
-    }
+    const actionAnswerElement = task4Element.querySelector('.action-answer')
 
-    sample.sort((a, b) => a - b)
+    actionAnswerElement.innerHTML = ''
 
-    const expectedValueMoment = mean(sample)
-    const varianceMoment = moment(sample, mean(sample), 2)
-    const deviationMoment = Math.sqrt(varianceMoment)
+    samples.forEach((sample, index) => {
+        sample.sort((a, b) => a - b)
 
-    expectedValueMomentElement.value = expectedValueMoment.toFixed(5)
-    varianceMomentElement.value = varianceMoment.toFixed(5)
-    deviationMomentElement.value = deviationMoment.toFixed(5)
+        const meanValue = mean(sample)
+        const varianceValue = varianceStandart(sample, meanValue)
+        const deviationValue = Math.sqrt(varianceValue)
 
-    const expectedValueLikelihood = mean(sample)
-    const varianceLikelihood = moment(sample, mean(sample), 2)
-    const deviationLikelihood = Math.sqrt(varianceLikelihood)
+        const containerDivElement = createContainer(`Sample ${alphabet[index]}:`)
+        
+        const meanMomentDivElement = createDSI(meanValue, 'Expected Value (Moment\'s method):')
+        const varianceMomentDivElement = createDSI(varianceValue, 'Variance Value (Moment\'s method):')
+        const deviationMomentDivElement = createDSI(deviationValue, 'Deviation Value (Moment\'s method):')
 
-    expectedValueLikelihoodElement.value = expectedValueLikelihood.toFixed(10)
-    varianceLikelihoodElement.value = varianceLikelihood.toFixed(10)
-    deviationLikelihoodElement.value = deviationLikelihood.toFixed(10)
+        const meanLikelihoodDivElement = createDSI(meanValue, 'Expected Value (Likelihood\'s method):')
+        const varianceLikelihoodDivElement = createDSI(varianceValue, 'Variance Value (Likelihood\'s method):')
+        const deviationLikelihoodDivElement = createDSI(deviationValue, 'Deviation Value (Likelihood\'s method):')
 
-    task4Element.querySelector('.action-answer').style.display = 'block'
+        containerDivElement.appendChild(meanMomentDivElement)
+        containerDivElement.appendChild(varianceMomentDivElement)
+        containerDivElement.appendChild(deviationMomentDivElement)
+
+        containerDivElement.appendChild(meanLikelihoodDivElement)
+        containerDivElement.appendChild(varianceLikelihoodDivElement)
+        containerDivElement.appendChild(deviationLikelihoodDivElement)
+
+        actionAnswerElement.appendChild(containerDivElement)
+    })
+
+    actionAnswerElement.style.display = 'block'
 })
 
 calculateTask5Element.addEventListener('click', () => {
-    const expectedValueElement = task5Element.querySelector('[data-expected]')
-    const expectedValueLowerElement = task5Element.querySelector('[data-expected-lower]')
-    const expectedValueUpperElement = task5Element.querySelector('[data-expected-upper]')
-    const deviationElement = task5Element.querySelector('[data-deviation]')
-    const deviationLowerElement = task5Element.querySelector('[data-deviation-lower]')
-    const deviationUpperElement = task5Element.querySelector('[data-deviation-upper]')
-    
     const samplesElements = [...samplesElement.querySelectorAll('.section')]
-    let sample = []
+    const samples = samplesElements.reduce((samples, sampleElement) => {
+        const input = sampleElement.querySelector('input')
 
-    for (let i = 0; i < changerElement.value; i++) {
-        const input = samplesElements[i].querySelector('input')
+        samples.push(parseSample(input.value ? input.value : input.placeholder))
 
-        sample.push(...parseSample(input.value ? input.value : input.placeholder))
-    }
+        return samples
+    }, [])
 
-    sample.sort((a, b) => a - b)
+    const actionAnswerElement = task5Element.querySelector('.action-answer')
 
-    const [expectedValue, expectedValueLower, expectedValueUpper] = expectedValueFind(sample, 0.95)
-    const [deviation, deviationLower, deviationUpper] = deviationFind(sample, 0.95)
+    actionAnswerElement.innerHTML = ''
 
-    expectedValueElement.value = expectedValue.toFixed(5)
-    expectedValueLowerElement.value = expectedValueLower.toFixed(5)
-    expectedValueUpperElement.value = expectedValueUpper.toFixed(5)
+    samples.forEach((sample, index) => {
+        sample.sort((a, b) => a - b)
 
-    deviationElement.value = deviation.toFixed(5)
-    deviationLowerElement.value = deviationLower.toFixed(5)
-    deviationUpperElement.value = deviationUpper.toFixed(5)
+        const [meanValue, meanValueLower, meanValueUpper] = expectedValueInterval(sample, 0.95)
+        const [deviationValue, deviationValueLower, deviationValueUpper] = deviationValueInterval(sample, 0.95)
 
-    task5Element.querySelector('.action-answer').style.display = 'block'
+        const containerDivElement = createContainer(`Sample ${alphabet[index]}:`)
+        
+        const meanDivElement = createDSI(meanValue, 'Expected Value (Central interval):')
+        const meanLowerDivElement = createDSI(meanValueLower, 'Expected Value (Lower interval):')
+        const meanUpperDivElement = createDSI(meanValueUpper, 'Expected Value (Upper interval):')
+
+        const deviationDivElement = createDSI(deviationValue, 'Expected Value (Central interval):')
+        const deviationLowerDivElement = createDSI(deviationValueLower, 'Variance Value (Lower interval):')
+        const deviationUpperDivElement = createDSI(deviationValueUpper, 'Deviation Value (Upper interval):')
+
+        containerDivElement.appendChild(meanDivElement)
+        containerDivElement.appendChild(meanLowerDivElement)
+        containerDivElement.appendChild(meanUpperDivElement)
+
+        containerDivElement.appendChild(deviationDivElement)
+        containerDivElement.appendChild(deviationLowerDivElement)
+        containerDivElement.appendChild(deviationUpperDivElement)
+
+        actionAnswerElement.appendChild(containerDivElement)
+    })
+
+    actionAnswerElement.style.display = 'block'
 })
