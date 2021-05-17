@@ -147,7 +147,7 @@ input[type=text].fit {
 
 canvas {
     width: 100vh;
-    max-width: 100vh;
+    max-width: 100%;
 }
 
 table {
