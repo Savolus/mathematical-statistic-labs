@@ -1,6 +1,6 @@
 import mean from './mean.js'
 import { varianceCorrected } from './variance.js'
-import criticalPointFisher from './criticalPointFisher.js'
+import criticalPointTValue from './criticalPointTValue.js'
 
 export default (intervals1, frequences1, intervals2, frequences2) => {
     const variantes1Unique = intervals1.map(({ start, end }) => +((start + end) / 2).toFixed(5))
@@ -34,31 +34,18 @@ export default (intervals1, frequences1, intervals2, frequences2) => {
     const mean2Value = mean(variantes2NotUnique)
     const variance2Value = varianceCorrected(variantes2NotUnique, mean2Value)
 
-    let observedValue = 0, powerOfFreedom1 = 0, powerOfFreedom2 = 0
+    const n1 = variantes1Unique.length, n2 = variantes2Unique.length
+    const powerOfFreedom = n1 + n2 - 2
 
-    if (variance1Value > variance2Value) {
-        observedValue = variance1Value / variance2Value
-        powerOfFreedom1 = variantes1Unique.length - 1
-        powerOfFreedom2 = variantes2Unique.length - 1
-    } else {
-        observedValue = variance2Value / variance1Value
-        powerOfFreedom1 = variantes2Unique.length - 1
-        powerOfFreedom2 = variantes1Unique.length - 1
-    }
-
-    observedValue = Math.abs(observedValue)
-
-    const criticalPointValue = criticalPointFisher(powerOfFreedom1, powerOfFreedom2)
+    const observedValue = (mean1Value - mean2Value) * Math.sqrt((n1 * n2 * powerOfFreedom) / (n1 + n2)) / Math.sqrt((n1 - 1) * variance1Value + (n2 - 1) * variance2Value)
+    const criticalPointValue = criticalPointTValue(powerOfFreedom)
 
     return {
-        H0: observedValue < criticalPointValue,
+        H0 : observedValue < criticalPointValue,
         result: {
             observedValue,
             criticalPointValue,
-            variance1Value,
-            variance2Value,
-            powerOfFreedom1,
-            powerOfFreedom2
+            powerOfFreedom
         }
     }
 }

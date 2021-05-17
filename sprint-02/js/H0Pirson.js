@@ -1,7 +1,7 @@
 import mean from './mean.js'
 import { varianceCorrected } from './variance.js'
-import laplaceIntegralFunction from './laplaceIntegralFunction.js';
 import criticalPointPirson from './criticalPointPirson.js';
+import laplaceIntegralFunction from './laplaceIntegralFunction.js';
 
 export default (intervals, frequences) => {
     const variantesUnique = intervals.map(({ start, end }) => +((start + end) / 2).toFixed(5))

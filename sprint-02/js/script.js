@@ -1,7 +1,6 @@
-import mean from './mean.js'
-import { varianceCorrected } from "./variance.js"
 import H0Pirson from "./H0Pirson.js"
 import H0Fisher from './H0Fisher.js'
+import H0TValue from './H0TValue.js'
 
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
@@ -301,7 +300,12 @@ calculateTask2Element.addEventListener('click', () => {
     task2Element.querySelector('.action-answer').style.display = 'block'
 })
 
-calculateTask3Element.addEventListener('click', () => {   
+calculateTask3Element.addEventListener('click', () => {
+    const hypothesisH0Element = task3Element.querySelector('[data-hypothesis-0]')
+    const hypothesisH0ObservedElement = task3Element.querySelector('[data-hypothesis-0-observed]')
+    const hypothesisH0CriticalPointElement = task3Element.querySelector('[data-hypothesis-0-critical]')
+    const hypothesisH0PowerOfFreedomElement = task3Element.querySelector('[data-hypothesis-0-power]')
+
     const sample1 = parseTable(dataElement)
     const sample2 = parseTable(dataTask3Element)
 
@@ -310,6 +314,13 @@ calculateTask3Element.addEventListener('click', () => {
     
     const intervals2 = sample2.map(({ start, end }) => { return { start, end }})
     const frequences2 = sample2.map(({ value }) => value)
+
+    const { H0: H0Answer, result: H0Results } = H0TValue(intervals1, frequences1, intervals2, frequences2)
+
+    hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
+    hypothesisH0ObservedElement.value = H0Results.observedValue
+    hypothesisH0CriticalPointElement.value = H0Results.criticalPointValue
+    hypothesisH0PowerOfFreedomElement.value = H0Results.powerOfFreedom
 
     task3Element.querySelector('.action-answer').style.display = 'block'
 })
