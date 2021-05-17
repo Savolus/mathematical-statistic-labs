@@ -1,7 +1,7 @@
 import mean from './mean.js'
 import { varianceCorrected } from './variance.js'
 import laplaceIntegralFunction from './laplaceIntegralFunction.js';
-import criticalPoint from './criticalPoint.js';
+import criticalPointPirson from './criticalPointPirson.js';
 
 export default (intervals, frequences) => {
     const variantesUnique = intervals.map(({ start, end }) => +((start + end) / 2).toFixed(5))
@@ -69,7 +69,7 @@ export default (intervals, frequences) => {
     const k = variantesUnique.length - 3
 
     // table for alpha=0.05
-    const criticalPointValue = criticalPoint(k)
+    const criticalPointValue = criticalPointPirson(k)
 
     return {
         H0: observedValue < criticalPointValue,
