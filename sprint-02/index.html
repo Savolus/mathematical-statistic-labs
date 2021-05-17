@@ -17,6 +17,10 @@
                     <input type="number" id="amount" value="10" min="1" max="50">
                 </div>
                 <div class="section">
+                    <label for="significance">Level of significance:</label>
+                    <input type="text" id="significance" class="content centered" value="0.05" data-significance readonly >
+                </div>
+                <div class="section">
                     <table>
                         <thead>
                             <tr>
@@ -78,10 +82,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="section">
-                    <span class="title">Level of significance:</span>
-                    <input type="text" class="content centered" value="0.05" data-significance readonly >
                 </div>
             </div>
         </div>
@@ -152,6 +152,65 @@
                     <span class="title without">Task 2</span>
                 </div>
             </div>
+            <div class="action-input">
+                <div class="section">
+                    <label for="amount">Amount of Intervals:</label>
+                    <input type="number" id="amount" value="8" min="1" max="50">
+                </div>
+                <div class="section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="text" value="Start of interval" class="centered" readonly></th>
+                                <th><input type="text" value="End of interval" class="centered" readonly></th>
+                                <th><input type="text" value="Value of interval" class="centered" readonly></th>
+                            </tr>
+                        </thead>
+                        <tbody class="data">
+                            <tr>
+                                <td><input type="text" placeholder="6" data-start></td>
+                                <td><input type="text" placeholder="6.08" data-end></td>
+                                <td><input type="text" placeholder="8" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.08" data-start></td>
+                                <td><input type="text" placeholder="6.16" data-end></td>
+                                <td><input type="text" placeholder="18" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.16" data-start></td>
+                                <td><input type="text" placeholder="6.24" data-end></td>
+                                <td><input type="text" placeholder="24" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.24" data-start></td>
+                                <td><input type="text" placeholder="6.32" data-end></td>
+                                <td><input type="text" placeholder="32" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.32" data-start></td>
+                                <td><input type="text" placeholder="6.4" data-end></td>
+                                <td><input type="text" placeholder="28" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.4" data-start></td>
+                                <td><input type="text" placeholder="6.48" data-end></td>
+                                <td><input type="text" placeholder="21" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.48" data-start></td>
+                                <td><input type="text" placeholder="6.56" data-end></td>
+                                <td><input type="text" placeholder="15" data-value></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="6.56" data-start></td>
+                                <td><input type="text" placeholder="6.64" data-end></td>
+                                <td><input type="text" placeholder="6" data-value></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="action-calculation">
                 <div class="section">
                     <input type="button" value="Calculate" class="calculate">
@@ -173,7 +232,6 @@
                 </div>
             </div>
             <div class="action-answer">
-                
             </div>
         </div>
     </div>

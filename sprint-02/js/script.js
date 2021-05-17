@@ -1,4 +1,7 @@
+import mean from './mean.js'
+import { varianceCorrected } from "./variance.js"
 import H0Pirson from "./H0Pirson.js"
+import H0Fisher from './H0Fisher.js'
 
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
@@ -11,12 +14,13 @@ const calculateTask1Element = task1Element.querySelector('.calculate')
 const calculateTask2Element = task2Element.querySelector('.calculate')
 const calculateTask3Element = task3Element.querySelector('.calculate')
 
+const dataTask2Element = task2Element.querySelector('.data')
+const changeAmountTask2Element = task2Element.querySelector('#amount')
+
 const chart1Element = task1Element.querySelector('#chart-1')
 const chart1ElementContext = chart1Element.getContext('2d')
 
 let chart1 = null
-
-const alpha = 0.05
 
 const parseTable = tableElement => {
     const trs = [...tableElement.querySelectorAll('tr')]
@@ -69,6 +73,41 @@ changeAmountElement.addEventListener('change', () => {
         }
 
         dataElement.appendChild(tr)
+    }
+})
+
+changeAmountTask2Element.addEventListener('change', () => {
+    dataTask2Element.innerHTML = ''
+
+    const size = changeAmountTask2Element.value
+
+    for (let i = 0; i < size; i++) {
+        const tr = document.createElement('tr')
+
+        for (let j = 0; j < 3; j++) {
+            const td = document.createElement('td')
+            const input = document.createElement('input')
+
+            input.type = 'text'
+            input.placeholder = (Math.random() * 10).toFixed(3)
+
+            switch (j) {
+                case 0:
+                    input.dataset.start = ''
+                    break
+                case 1:
+                    input.dataset.end = ''
+                    break
+                case 2:
+                    input.dataset.value = ''
+                    break
+            }
+
+            td.appendChild(input)
+            tr.appendChild(td)
+        }
+
+        dataTask2Element.appendChild(tr)
     }
 })
 
@@ -194,14 +233,16 @@ calculateTask1Element.addEventListener('click', () => {
 })
 
 calculateTask2Element.addEventListener('click', () => {
-    const table = parseTable(dataElement)
+    const sample1 = parseTable(dataElement)
+    const sample2 = parseTable(dataTask2Element)
 
-    const intervals = table.map(({ start, end }) => { return { start, end }})
-    const frequences = table.map(({ value }) => value)
+    const intervals1 = sample1.map(({ start, end }) => { return { start, end }})
+    const frequences1 = sample1.map(({ value }) => value)
+    
+    const intervals2 = sample2.map(({ start, end }) => { return { start, end }})
+    const frequences2 = sample2.map(({ value }) => value)
 
-    const sum = frequences.reduce((acc, value) => acc += value)
-    const relative = frequences.map(value => value / sum)
-
+    console.log(H0Fisher(intervals1, frequences1, intervals2, frequences2))
 
     task2Element.querySelector('.action-answer').style.display = 'block'
 })
