@@ -18,7 +18,7 @@ export default (value, title, classes = {}) => {
         spanElement.classList.add(className)
     })
 
-    inputElement.value = +value ? +value.toFixed(5) : value
+    inputElement.value = +value ? (+value).toFixed(5) : value
     inputElement.type = 'text'
     inputElement.readOnly = true
 
