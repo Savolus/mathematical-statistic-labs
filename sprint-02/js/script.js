@@ -304,7 +304,6 @@ calculateTask3Element.addEventListener('click', () => {
     const hypothesisH0Element = task3Element.querySelector('[data-hypothesis-0]')
     const hypothesisH0ObservedElement = task3Element.querySelector('[data-hypothesis-0-observed]')
     const hypothesisH0CriticalPointElement = task3Element.querySelector('[data-hypothesis-0-critical]')
-    const hypothesisH0PowerOfFreedomElement = task3Element.querySelector('[data-hypothesis-0-power]')
 
     const sample1 = parseTable(dataElement)
     const sample2 = parseTable(dataTask3Element)
@@ -317,10 +316,12 @@ calculateTask3Element.addEventListener('click', () => {
 
     const { H0: H0Answer, result: H0Results } = H0Middle(intervals1, frequences1, intervals2, frequences2)
 
-    hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
-    hypothesisH0ObservedElement.value = H0Results.observedValue
-    hypothesisH0CriticalPointElement.value = H0Results.criticalPointValue
-    hypothesisH0PowerOfFreedomElement.value = H0Results.powerOfFreedom
+    // hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
+    // hypothesisH0ObservedElement.value = H0Results.observedValue
+    // hypothesisH0CriticalPointElement.value = H0Results.criticalPointValue
+
+    console.table(H0Answer)
+    console.table(H0Results)
 
     task3Element.querySelector('.action-answer').style.display = 'block'
 })

@@ -1,6 +1,7 @@
 import mean from './mean.js'
 import { varianceCorrected } from './variance.js'
 import criticalPointTValue from './criticalPointTValue.js'
+import laplaceIntegralFunctionReversed from './laplaceIntegralFunctionReversed.js'
 
 export default (intervals1, frequences1, intervals2, frequences2) => {
     const variantes1Unique = intervals1.map(({ start, end }) => +((start + end) / 2).toFixed(5))
@@ -38,19 +39,27 @@ export default (intervals1, frequences1, intervals2, frequences2) => {
     const powerOfFreedom = n1 + n2 - 2
 
     // T
-    // const observedValue = (mean1Value - mean2Value) * Math.sqrt((n1 * n2 * powerOfFreedom) / (n1 + n2)) / Math.sqrt((n1 - 1) * variance1Value + (n2 - 1) * variance2Value)
-    // const criticalPointValue = criticalPointTValue(powerOfFreedom)
+    const observedValueT = Math.abs(mean1Value - mean2Value) / Math.sqrt((n1 * variance1Value + n2 * variance2Value) / powerOfFreedom * (1 / n1 + 1 / n2))
+    const criticalPointValueT = criticalPointTValue(powerOfFreedom)
 
     // Z
-    const observedValue = Math.abs(mean1Value - mean2Value) / Math.sqrt(variance1Value / n1 + variance2Value / n2)
-    const criticalPointValue = 1.96 // for Z when a=0.05
+    const observedValueZ = Math.abs(mean1Value - mean2Value) / Math.sqrt(variance1Value / n1 + variance2Value / n2)
+    const criticalPointValueZ = laplaceIntegralFunctionReversed((1 - 0.05) / 2) // a=0.05
 
     return {
-        H0 : observedValue < criticalPointValue,
+        H0: {
+            T: observedValueT < criticalPointValueT,
+            Z: observedValueZ < criticalPointValueZ
+        },
         result: {
-            observedValue,
-            criticalPointValue,
-            powerOfFreedom
+            T: {
+                observedValueT,
+                criticalPointValueT
+            },
+            Z: {
+                observedValueZ,
+                criticalPointValueZ
+            }
         }
     }
 }

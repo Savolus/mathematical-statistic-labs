@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 15px;
+}
+
+.container {
+    margin: 15px 0;
+    padding: 20px;
+    border: 1px solid grey;
+    width: fit-content;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.container * {
+    font-size: 16px;
+}
+
+.action-input,
+.action-header,
+.action-calculate,
+.action-answer {
+    display: flex;
+}
+
+.action-input,
+.action-answer {
+    flex-direction: column;
+}
+
+.section {
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.action-input .section,
+.action-answer .section {
+    margin: 5px 0;
+}
+
+.action-input .section.data,
+.action-answer .section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.section:first-child {
+    margin-left: 0;
+}
+
+.section:last-child {
+    margin-right: 0;
+}
+
+input,
+select {
+    height: 2rem;
+    padding: .25rem;
+    outline: none;
+}
+
+input[type=radio] {
+    height: 1.25rem;
+}
+
+input[type=text] {
+    width: 12rem;
+}
+
+input[type=text].short {
+    width: 4.5rem;
+}
+
+input[type=number] {
+    width: 3.5rem;
+}
+
+input[type=radio],
+input[type=button] {
+    cursor: pointer;
+}
+
+label {
+    font-weight: bold;
+    font-size: 24px;
+    display: block;
+    margin-right: 5px;
+}
+
+.container > div {
+    margin: 10px 0;
+}
+
+.container > div:first-of-type {
+    margin-top: 0;
+}
+
+.container > div:last-of-type {
+    margin-bottom: 0;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+    margin: 15px 0;
+}
+
+.title.without {
+    margin: 5px 0;
+}
+
+.action-answer {
+    display: none;
+}
+
+.centered {
+    text-align: center;
+}
+
+.fit {
+    width: 100%;
+}
+
+.content {
+    max-width: 6rem;
+}
+
+input[type=text].fit {
+    width: calc(100% - 85px);
+}
+
+canvas {
+    max-width: 75vh;
+    max-height: 75vh;
+}
+
+.margin-top {
+    margin-top: 25px;
+}
+
+table {
+    border-collapse: collapse;
+}
