@@ -153,3 +153,7 @@ canvas {
 table {
     border-collapse: collapse;
 }
+
+textarea {
+    resize: none;
+}

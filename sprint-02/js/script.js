@@ -301,9 +301,12 @@ calculateTask2Element.addEventListener('click', () => {
 })
 
 calculateTask3Element.addEventListener('click', () => {
-    const hypothesisH0Element = task3Element.querySelector('[data-hypothesis-0]')
-    const hypothesisH0ObservedElement = task3Element.querySelector('[data-hypothesis-0-observed]')
-    const hypothesisH0CriticalPointElement = task3Element.querySelector('[data-hypothesis-0-critical]')
+    const hypothesisH0ZElement = task3Element.querySelector('[data-hypothesis-0-z]')
+    const hypothesisH0TElement = task3Element.querySelector('[data-hypothesis-0-t]')
+    const hypothesisH0ObservedZElement = task3Element.querySelector('[data-hypothesis-0-observed-z]')
+    const hypothesisH0ObservedTElement = task3Element.querySelector('[data-hypothesis-0-observed-t]')
+    const hypothesisH0CriticalPointZElement = task3Element.querySelector('[data-hypothesis-0-critical-z]')
+    const hypothesisH0CriticalPointTElement = task3Element.querySelector('[data-hypothesis-0-critical-t]')
 
     const sample1 = parseTable(dataElement)
     const sample2 = parseTable(dataTask3Element)
@@ -316,12 +319,12 @@ calculateTask3Element.addEventListener('click', () => {
 
     const { H0: H0Answer, result: H0Results } = H0Middle(intervals1, frequences1, intervals2, frequences2)
 
-    // hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
-    // hypothesisH0ObservedElement.value = H0Results.observedValue
-    // hypothesisH0CriticalPointElement.value = H0Results.criticalPointValue
-
-    console.table(H0Answer)
-    console.table(H0Results)
+    hypothesisH0ZElement.value = `${H0Answer.Z} => ${H0Answer.Z ? 'Approved' : 'Not approved'}`
+    hypothesisH0TElement.value = `${H0Answer.T} => ${H0Answer.T ? 'Approved' : 'Not approved'}`
+    hypothesisH0ObservedZElement.value = H0Results.Z.observedValueZ
+    hypothesisH0ObservedTElement.value = H0Results.T.observedValueT
+    hypothesisH0CriticalPointZElement.value = H0Results.Z.criticalPointValueZ
+    hypothesisH0CriticalPointTElement.value = H0Results.T.criticalPointValueT
 
     task3Element.querySelector('.action-answer').style.display = 'block'
 })
