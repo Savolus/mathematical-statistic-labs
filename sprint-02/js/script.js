@@ -1,6 +1,6 @@
 import H0Pirson from "./H0Pirson.js"
 import H0Fisher from './H0Fisher.js'
-import H0TValue from './H0TValue.js'
+import H0Middle from './H0Middle.js'
 
 const changeAmountElement = document.querySelector('#amount')
 const dataElement = document.querySelector('.data')
@@ -315,7 +315,7 @@ calculateTask3Element.addEventListener('click', () => {
     const intervals2 = sample2.map(({ start, end }) => { return { start, end }})
     const frequences2 = sample2.map(({ value }) => value)
 
-    const { H0: H0Answer, result: H0Results } = H0TValue(intervals1, frequences1, intervals2, frequences2)
+    const { H0: H0Answer, result: H0Results } = H0Middle(intervals1, frequences1, intervals2, frequences2)
 
     hypothesisH0Element.value = `${H0Answer} => ${H0Answer ? 'Approved' : 'Not approved'}`
     hypothesisH0ObservedElement.value = H0Results.observedValue
