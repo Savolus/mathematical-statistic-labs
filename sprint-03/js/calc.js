@@ -49,11 +49,6 @@ export default (table, alpha) => {
         }, 0) / q
     ).toFixed(2)
 
-    // console.log(JSON.stringify(table, null, 2))
-
-    console.table({ meanRows, meanColumns })
-    console.table({ meanSum })
-
     const Q1 = +(
         n * q * meanRows.reduce((acc, meanValue) => {
             return acc + (meanValue - meanSum) ** 2
@@ -109,32 +104,16 @@ export default (table, alpha) => {
     const k = N - 1
     const S = +(Q / k).toFixed(4)
 
-    console.table({ Q1, Q2, Q3, Q4, Q })
-    console.table({ k1, k2, k3, k4, k })
-    console.table({ S1, S2, S3, S4, S })
-
     const FA = +(S1 / S4).toFixed(2)
     const FB = +(S2 / S4).toFixed(2)
     const FAB = +(S3 / S4).toFixed(2)
-
-    console.table({ FA, FB, FAB })
 
     const F1 = FCritical(alpha, k1 - 1, k4 - 1)
     const F2 = FCritical(alpha, k2 - 1, k4 - 1)
     const F3 = FCritical(alpha, k3 - 1, k4 - 1)
 
-    console.table({ F1, F2, F3 })
-
-    console.log(FA < F1, FB < F2, FAB < F3)
-
     return {
         table,
-        sizes: {
-            q,
-            p,
-            n,
-            N
-        },
         means: {
             meanRows,
             meanColumns,
