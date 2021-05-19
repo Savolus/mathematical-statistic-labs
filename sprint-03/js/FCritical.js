@@ -205,7 +205,10 @@ const TABLE_ALPHA_1 = [
 ]
 
 export default (alpha, k1, k2) => {
-    return alpha === 0.05 ?
-        TABLE_ALPHA_5[k2 - 1][k1 - 1]:
-        TABLE_ALPHA_1[k2 - 1][k1 - 1]
+    switch (alpha) {
+        case 0.05: return TABLE_ALPHA_5[k2 - 1][k1 - 1]
+        case 0.01: return TABLE_ALPHA_1[k2 - 1][k1 - 1]
+    }
+
+    return 0
 }
