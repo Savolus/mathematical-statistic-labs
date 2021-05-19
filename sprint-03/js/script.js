@@ -10,7 +10,8 @@ const levelOfSignificanceElement = taskDataElement.querySelector('#significance'
 
 const calculationTaskElement = taskElement.querySelector('.action-calculation')
 const tableDataElement = taskDataElement.querySelector('.input-table')
-const tableAnswerElement = taskElement.querySelector('.answer-table')
+const table1AnswerElement = taskElement.querySelector('.answer-table-1')
+const table2AnswerElement = taskElement.querySelector('.answer-table-2')
 
 const renderDataTable = () => {
     const A_factor = +amountOfAFactorsElement.value
@@ -67,7 +68,8 @@ const renderAnswerTable = data => {
     const A_factor = +amountOfAFactorsElement.value
     const B_factor = +amountOfBFactorsElement.value
 
-    tableAnswerElement.innerHTML = ''
+    table1AnswerElement.innerHTML = ''
+    table2AnswerElement.innerHTML = ''
 
     const { table, means, Q, k, S, F } = data
 
@@ -158,8 +160,72 @@ const renderAnswerTable = data => {
             tr.appendChild(td)
         }
 
-        tableAnswerElement.appendChild(tr)
+        table1AnswerElement.appendChild(tr)
     }
+
+    for (let i = 0; i < 6; i++) {
+        const tr = document.createElement('tr')
+
+        for (let j = 0; j < 4; j++) {
+            const td = document.createElement('td')
+
+            if (i === 0) {
+                if (j === 0) {
+                    td.innerHTML = 'Resource of scattering'
+                } else if (j === 1) {
+                    td.innerHTML = 'Sum of square means'
+                } else if (j === 2) {
+                    td.innerHTML = 'Degree of freedom'
+                } else if (j === 3) {
+                    td.innerHTML = 'Statistical variation'
+                }
+            } else {
+                switch (i) {
+                    case 1: !j && (td.innerHTML = 'A factor'); break
+                    case 2: !j && (td.innerHTML = 'B factor'); break
+                    case 3: !j && (td.innerHTML = 'A B factors'); break
+                    case 4: !j && (td.innerHTML = 'Random factors'); break
+                    case 5: !j && (td.innerHTML = 'General variation'); break
+                }
+
+                if (j === 1) {
+                    td.innerHTML = Q[`Q${i === 5 ? '' : i}`]
+                } else if (j === 2) {
+                    td.innerHTML = k[`k${i === 5 ? '' : i}`]
+                } else if (j === 3) {
+                    td.innerHTML = S[`S${i === 5 ? '' : i}`]
+                }
+            }
+
+            tr.appendChild(td)
+        }
+
+        table2AnswerElement.appendChild(tr)
+    }
+
+    const FAElement = taskElement.querySelector('#FA')
+    const FBElement = taskElement.querySelector('#FB')
+    const FABElement = taskElement.querySelector('#FAB')
+
+    const F1Element = taskElement.querySelector('#F1')
+    const F2Element = taskElement.querySelector('#F2')
+    const F3Element = taskElement.querySelector('#F3')
+
+    const FTest1Element = taskElement.querySelector('#F_test_1')
+    const FTest2Element = taskElement.querySelector('#F_test_2')
+    const FTest3Element = taskElement.querySelector('#F_test_3')
+
+    FAElement.innerHTML = F.F_factors.FA
+    FBElement.innerHTML = F.F_factors.FB
+    FABElement.innerHTML = F.F_factors.FAB
+
+    F1Element.innerHTML = F.F_criticals.F1
+    F2Element.innerHTML = F.F_criticals.F2
+    F3Element.innerHTML = F.F_criticals.F3
+
+    FTest1Element.innerHTML = `${F.F_results.F_test_1} => ${F.F_results.F_test_1 ? 'Approved' : 'Not Approved'}`
+    FTest2Element.innerHTML = `${F.F_results.F_test_2} => ${F.F_results.F_test_2 ? 'Approved' : 'Not Approved'}`
+    FTest3Element.innerHTML = `${F.F_results.F_test_3} => ${F.F_results.F_test_3 ? 'Approved' : 'Not Approved'}`
 
     answerActionElement.style.display = 'block'
 }
