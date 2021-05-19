@@ -22,24 +22,41 @@
                 </div>
                 <div class="section">
                     <label for="significance">Level of significance:</label>
-                    <select id="significance" class="content centered" value="0.05" data-significance>
+                    <select id="significance" class="content centered" value="0.05">
                         <option value="0.05">0.05</option>
                         <option value="0.01">0.01</option>
                     </select>
                 </div>
                 <div class="section">
                     <table>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <tbody class="input-table">
+                            <tr>
+                                <td rowspan="2">B factor</td>
+                                <td colspan="3">A factor</td>
+                            </tr>
+                            <tr>
+                                <td>A1</td>
+                                <td>A2</td>
+                                <td>A3</td>
+                            </tr>
+                            <tr>
+                                <td>B1</td>
+                                <td><textarea rows="3" placeholder="14.85, 11.94, 10.5, 12.35, 15.62, 13.2, 10.62, 12.82, 11.48, 13.5"></textarea></td>
+                                <td><textarea rows="3" placeholder="6.42, 5.23, 4.96, 5.6, 9.82, 10.23, 12.44, 16.5, 5.41, 6.32"></textarea></td>
+                                <td><textarea rows="3" placeholder="7.82, 9.63, 12.92, 10.82, 9.36, 5.11, 13.52, 14.2, 8.96, 9.92"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td>B2</td>
+                                <td><textarea rows="3" placeholder="12.5, 13.8, 14.9, 12.6, 10.85, 11.96, 12.6, 13.42, 16, 17.2"></textarea></td>
+                                <td><textarea rows="3" placeholder="10.2, 10.85, 12.34, 11.95, 12.4, 14.92, 9.86, 9.62, 8.36, 13.62"></textarea></td>
+                                <td><textarea rows="3" placeholder="13.62, 12.55, 14.7, 13.25, 14.66, 8.35, 10.96, 11.62, 6.12, 15.66"></textarea></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="container task-1">
+        <div class="container task">
             <div class="action-header">
                 <div class="section">
                     <span class="title without">Task 1</span>

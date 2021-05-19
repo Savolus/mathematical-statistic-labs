@@ -1,5 +1,4 @@
 import mean from './mean.js'
-import table from './table.js'
 import FCritical from './FCritical.js'
 
 export default (table, alpha) => {
@@ -120,9 +119,9 @@ export default (table, alpha) => {
 
     console.table({ FA, FB, FAB })
 
-    const F1 = FCritical(alpha, k1, k4)
-    const F2 = FCritical(alpha, k2, k4)
-    const F3 = FCritical(alpha, k3, k4)
+    const F1 = FCritical(alpha, k1 - 1, k4 - 1)
+    const F2 = FCritical(alpha, k2 - 1, k4 - 1)
+    const F3 = FCritical(alpha, k3 - 1, k4 - 1)
 
     console.table({ F1, F2, F3 })
 
