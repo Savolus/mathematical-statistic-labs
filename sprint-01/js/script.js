@@ -474,8 +474,8 @@ calculateTask5Element.addEventListener('click', () => {
         const meanLowerDivElement = createDSI(meanValueLower, 'Expected Value (Lower interval):')
         const meanUpperDivElement = createDSI(meanValueUpper, 'Expected Value (Upper interval):')
 
-        const deviationDivElement = createDSI(deviationValue, 'Expected Value (Central interval):')
-        const deviationLowerDivElement = createDSI(deviationValueLower, 'Variance Value (Lower interval):')
+        const deviationDivElement = createDSI(deviationValue, 'Deviation Value (Central interval):')
+        const deviationLowerDivElement = createDSI(deviationValueLower, 'Deviation Value (Lower interval):')
         const deviationUpperDivElement = createDSI(deviationValueUpper, 'Deviation Value (Upper interval):')
 
         containerDivElement.appendChild(meanDivElement)
